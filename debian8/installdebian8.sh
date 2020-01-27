@@ -1,111 +1,21 @@
 #!/bin/sh
 
-LOG_PIPE=log.pipe
-rm -f LOG_PIPE
-mkfifo ${LOG_PIPE}
-LOG_FILE=log.file
-rm -f LOG_FILE
-tee < ${LOG_PIPE} ${LOG_FILE} &
-
-exec  > ${LOG_PIPE}
-exec  2> ${LOG_PIPE}
-
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
 
-Infon() {
-	printf "\033[1;32m$@\033[0m"
-}
-Info()
-{
-	Infon "$@\n"
-}
-Error()
-{
-	printf "\033[1;33m$@\033[0m\n"
-}
-Error_n()
-{
-	Error "- - - $@"
-}
-Error_s()
-{
-	Error "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-}
-log_s()
-{
-	Info "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-}
-log_n()
-{
-	Info "\033[1;34m$@\033[0m\n"
-}
-log_red()
-{
-	Info "\033[1;31m$@\033[0m\n"
-}
-log_t()
-{
-	log_s
-	Info "- - - $@"
-	log_s
-}
-lines()
-{
-	Info "${green}------------------------------------------------------------------------"
-}
-wow()
-{
-	lines
-}
-wow1()
-{
-	lines
-}
-infomenu()
-{
-	Info "${yellow}▇▇▇▇▇ | ${CYAN}Добро пожаловать, в установочное меню ${red}BSPanel${blue} | ▇▇▇▇▇▇"
-}
-info()
-{
-	printf "\033[1;33m$@\033[0m\n"
-}
-info_n()
-{
-	info "- - - $@"
-}
-lines_1()
-{
-	lines_2 "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-}
-lines_2()
-{
-	printf "\033[1;33m$@\033[0m\n"
-}
-log_n11()
-{
-	Info "- - - $@"
-}
-log_tt()
-{
-	Info "• ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ ${red}$@${green} ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ • "
-}
 check()
 {
   if [ $? -eq 0 ]; then
-  echo "${green}[OK]${green}"
+  echo -n "${green}[OK]${green}"
   tput sgr0
   else
-  echo "${red}[FAIL]${red}"
+  echo -n "${red}[FAIL]${red}"
   tput sgr0
   fi
 }
 bspanelsh()
 {
-	cd /root/
-  sh bspanel.sh
-}
 red=$(tput setf 4)
 green=$(tput setf 2)
 reset=$(tput sgr0)
@@ -486,3 +396,5 @@ case $case in
   1) bspanelsh;;
   0) exit;;
 esac
+}
+bspanelsh
