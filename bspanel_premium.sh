@@ -1,0 +1,69 @@
+#!/bin/sh
+
+MIRROR='http://cdn.bspanel.ru'
+IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
+VER=`cat /etc/issue.net | awk '{print $1$3}'`
+
+infomenu()
+{
+	Info "${green}|--------------- | ${CYAN}Добро пожаловать, в установочное меню ${red}BSPanel${green} (${orange}тариф Premium Pack${green}) | ---------------|"
+}
+infomenu2()
+{
+	Info "${green}|------------------------------------------------------------------------------------------------------|"
+}
+Info()
+{
+	Infon "$@\n"
+}
+Infon() {
+	printf "\033[1;32m$@\033[0m"
+}
+red=$(tput setf 4)
+green=$(tput setf 2)
+reset=$(tput sgr0)
+toend=$(tput hpa $(tput cols))$(tput cub 6)
+blue=$(tput setaf 4)
+orange=$(tput setaf 3)
+pink=$(tput setaf 5)
+cyan=$(tput setaf 6)
+installtest()
+{
+whiptail --title "Теста блока пароля" --passwordbox "Введите ваш пароль и нажмите ОК для продолжения." 10 60 3>&1 1>&2 2>&3
+}
+installtest2()
+{
+{
+    for ((i = 0 ; i <= 100 ; i+=20)); do
+        sleep 1
+        echo $i
+    done
+} | whiptail --gauge "Пожалуйста подождите пока происходит установка BSPANEL" 6 60 0
+
+}
+menu()
+{
+	clear
+	infomenu
+	Info "• ${red}1${green} - ${red}Полная установка и настройка хостинга на BSPanel${green} •"
+	Info "• ${red}2${green} - Установить ${red}BSPanel${green} •"
+	Info "• ${red}3${green} - Настройка локации под ${red}BSPanel${green} •"
+	Info "• ${red}4${green} - Меню ${red}установки WEB модулей${green}"
+	Info "• ${red}5${green} - Меню установки ${red}бесплатных шаблонов${green} •"
+	Info "• ${red}6${green} - Меню установки ${red}платных шаблонов${green} •"
+	Info "• ${red}7${green} - Меню подключения ${red}Веб-мониторинга BSPANEL${green} •"
+	Info "• ${red}8${green} - Меню ${red}быстрого устранения ошибок${green} •"
+	Info "• ${red}9${green} - Меню установки ${red}игр${green} •"
+	Info "• ${red}0${green} - Выйти •"
+	infomenu2
+	read -p "${cyan}Пожалуйста, введите пункт меню: " case
+	case $case in
+		1) install_check;;
+		2) installtest;;
+		3) installtest2;;
+		4) mce_pass;;
+		5) install_games;;
+		0) exit;;
+	esac
+}
+menu
