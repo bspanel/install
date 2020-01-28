@@ -20,4 +20,5 @@ pink=$(tput setaf 5)
 cyan=$(tput setaf 6)
 #############Цвета#############
 echo "• Устанавливаем пакеты ${red}php5 php5-dev php5-curl php5-memcache php5-json php5-mysql php-pear${red} •"
-apt-get install -y php5 php5-dev php5-curl php5-memcache php5-json php5-mysql php-pear > /dev/null 2>&1 && check
+apt-get install -y php5 php5-dev php5-curl php5-memcache php5-json php5-mysql php-pear > /dev/null 2>&1
+check
