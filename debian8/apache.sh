@@ -25,15 +25,15 @@ pink=$(tput setaf 5)
 cyan=$(tput setaf 6)
 #############Цвета#############
 echo "• Устанавливаем и настраиваем ${red}Apache2${green} •"
-apt-get install -y apache libapache2-mod-php5
+apt-get install -y apache libapache2-mod-php5 > /dev/null 2>&1 && check
 echo "• Включаем модуль ${red}Apache2${green} •"
-a2enmod php5 > /dev/null 2>&1
+a2enmod php5 > /dev/null 2>&1 && check
 echo "• Включаем модуль ${red}mod_rewrite${green} для ${red}Apache2${green} •"
 a2enmod rewrite > /dev/null 2>&1 && check
 echo "• Перезагружаем ${red}Apache2${green} •"
 service apache2 restart	> /dev/null 2>&1 && check
 echo "• Меняем порт ${red}Apache2${green} •"
-sed -i "s/80/${port}/g" /etc/apache2/ports.conf
+sed -i "s/80/${port}/g" /etc/apache2/ports.conf > /dev/null 2>&1 && check
 echo "• Создаем хост в ${red}Apache2${green} - создание файлов виртуальных хостов •"
 mv /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/.000-default.conf
 FILE='/etc/apache2/sites-available/000-default.conf'
