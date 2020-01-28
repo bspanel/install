@@ -56,12 +56,10 @@ MYPASS=$(pwgen -cns -1 16)
 MYPASS2=$(pwgen -cns -1 16)
 ###################################Пакеты##################################################################
 echo "• Добавляем пакеты •"
-sh /root/install/debian8/sources.sh
+sh /root/install/debian8/sources.sh && check
 echo "• Обновляем пакеты •"
 apt-get update -y > /dev/null 2>&1
 apt-get upgrade -y > /dev/null 2>&1 && check
-echo mysql-server mysql-server/root_password select "$MYPASS" | debconf-set-selections
-echo mysql-server mysql-server/root_password_again select "$MYPASS" | debconf-set-selections
 ###################################Пакеты###################################################################
 
 ###################################PHP##################################################################
