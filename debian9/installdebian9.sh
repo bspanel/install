@@ -104,7 +104,7 @@ check()
 bspanelsh()
 {
 	cd /root/
-  sh bspanel.sh
+   bspanel.sh
 }
 red=$(tput setf 4)
 green=$(tput setf 2)

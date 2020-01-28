@@ -3,7 +3,16 @@
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
-
+#############Цвета#############
+red=$(tput setf 4)
+green=$(tput setf 2)
+reset=$(tput sgr0)
+toend=$(tput hpa $(tput cols))$(tput cub 6)
+blue=$(tput setaf 4)
+orange=$(tput setaf 3)
+pink=$(tput setaf 5)
+cyan=$(tput setaf 6)
+#############Цвета#############
 check()
 {
   if [ $? -eq 0 ]; then
@@ -16,18 +25,12 @@ check()
 }
 bspanelsh()
 {
-red=$(tput setf 4)
-green=$(tput setf 2)
-reset=$(tput sgr0)
-toend=$(tput hpa $(tput cols))$(tput cub 6)
 clear
-echo "${LIME_YELLOW}-------------------------------------------------------------------------------"
+echo "${orange}-------------------------------------------------------------------------------"
 Info "Здравствуйте, данный скрипт поможет Вам установить ${red}BSPanel${blue} на Debian 8
 Вам после установки, ни чего делать не надо.
-Только надо установить MCE(для работы MySQL), и игры с нашего автоустановщика которые вам нужны!
-Тарифы в панели уже созданы для всех игр и всех версий билдов.
 Скрипт за Вас всё установить кроме игр!"
-echo "${LIME_YELLOW}-------------------------------------------------------------------------------"
+echo "${orange}-------------------------------------------------------------------------------"
 while true; do
 read -p "${green}Вы уверены, что хотите установить полностью ${red}BSPanel${green}?(${red}Y${green}/${red}N${green}): " yn
 case $yn in
@@ -36,56 +39,38 @@ case $yn in
   * ) echo "Ответьте, пожалуйста ${red}Y${green} или ${red}N${green}.";;
 esac
 done
-read -p "${CYAN}Пожалуйста, введите ${red}домен ${CYAN}или ${red}IP${green}: ${yellow}" DOMAIN
-read -p "${CYAN}Введите пароль от root${green}: ${yellow}" VPASS
+read -p "${cyan}Пожалуйста, введите ${red}домен ${cyan}или ${red}IP${green}: ${cyan}" DOMAIN
+read -p "${cyan}Введите пароль от root${green}: ${yellow}" VPASS
 echo "• Начинаем установку ${red}BSPanel${green} •"
 echo "• Обновляем пакеты •"
 apt-get update > /dev/null 2>&1 && check
-echo "• Устанавливаем пакеты ${red}apt-utils pwgen wget dialog sudo!${red} •"
-apt-get install -y apt-utils pwgen wget dialog sudo > /dev/null 2>&1 && check
+echo "• Устанавливаем пакеты ${red}pwgen wget dialog sudo unzip nano memcached git!${red} •"
+apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git > /dev/null 2>&1 && check
 MYPASS=$(pwgen -cns -1 16)
 MYPASS2=$(pwgen -cns -1 16)
-OS=$(lsb_release -s -i -c -r | xargs echo |sed 's; ;-;g' | grep Ubuntu)
-if [ "$OS" = "Debian8" ]; then
-  echo "• Добавляем репозиторий •"
-  echo "deb http://ftp.ru.debian.org/debian/ jessie main" > /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ jessie main" >> /etc/apt/sources.list
-  echo "deb http://security.debian.org/ jessie/updates main" >> /etc/apt/sources.list
-  echo "deb-src http://security.debian.org/ jessie/updates main" >> /etc/apt/sources.list
-  echo "deb http://ftp.ru.debian.org/debian/ jessie-updates main" >> /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ jessie-updates main" >> /etc/apt/sources.list
-fi
-if [ "$OS" = "Debian7" ]; then
-  log_t "• Добавляем репозиторий •"
-  echo "deb http://ftp.ru.debian.org/debian/ wheezy main" > /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ wheezy main" >> /etc/apt/sources.list
-  echo "deb http://security.debian.org/ wheezy/updates main" >> /etc/apt/sources.list
-  echo "deb-src http://security.debian.org/ wheezy/updates main" >> /etc/apt/sources.list
-  echo "deb http://ftp.ru.debian.org/debian/ wheezy-updates main" >> /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ wheezy-updates main" >> /etc/apt/sources.list
-fi
-if [ "$OS" = "Debian9" ]; then
-  echo "• Добавляем репозиторий •"
-  echo "deb http://ftp.ru.debian.org/debian/ stretch main" > /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ stretch main" >> /etc/apt/sources.list
-  echo "deb http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
-  echo "deb-src http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
-  echo "deb http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
-  wget http://www.dotdeb.org/dotdeb.gpg
-  apt-key add dotdeb.gpg
-  rm dotdeb.gpg
-fi
+###################################Пакеты##################################################################
+source ./sources.sh
 echo "• Обновляем пакеты •"
 apt-get update -y > /dev/null 2>&1
 apt-get upgrade -y > /dev/null 2>&1 && check
 echo mysql-server mysql-server/root_password select "$MYPASS" | debconf-set-selections
 echo mysql-server mysql-server/root_password_again select "$MYPASS" | debconf-set-selections
-echo "• Устанавливаем пакеты ${red}apache2 php5 php5-dev cron unzip sudo nano php5-curl php5-memcache php5-json memcached mysql-server php5-mysql libapache2-mod-php5 php-pear${red} •"
-apt-get install -y apache2 php5 php5-dev cron unzip sudo nano php5-curl php5-memcache php5-json memcached mysql-server php5-mysql libapache2-mod-php5 php-pear > /dev/null 2>&1 && check
-echo "• Включаем модуль ${red}Apache2${green} •"
-a2enmod php5 > /dev/null 2>&1
-service apache2 restart > /dev/null 2>&1 && check
+###################################Пакеты###################################################################
+
+###################################PHP##################################################################
+source ./sources.sh
+echo "• Обновляем пакеты •"
+apt-get update -y > /dev/null 2>&1
+apt-get upgrade -y > /dev/null 2>&1 && check
+###################################PHP###################################################################
+
+###################################Apache2###################################################################
+source ./apache.sh
+###################################Apache2###################################################################
+
+###################################Nginx###################################################################
+source ./nginx.sh
+###################################Nginx###################################################################
 echo "• Устанавливаем ${red}phpMyAdmin${green} •"
 echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
 echo "phpmyadmin phpmyadmin/mysql/admin-user string root" | debconf-set-selections
@@ -115,29 +100,6 @@ else
 apt-get install -y libssh2-php > /dev/null 2>&1
 fi
 check
-echo "• Создаем хост в ${red}Apache2${green} - создание файлов виртуальных хостов •"
-mv /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/.000-default.conf
-FILE='/etc/apache2/sites-available/000-default.conf'
-  echo "<VirtualHost *:80>">$FILE
-  echo "	ServerName $DOMAIN">>$FILE
-  echo "	DocumentRoot /var/www">>$FILE
-  echo "	<Directory /var/www/>">>$FILE
-  echo "	Options Indexes FollowSymLinks MultiViews">>$FILE
-  echo "	AllowOverride All">>$FILE
-  echo "	Order allow,deny">>$FILE
-  echo "	allow from all">>$FILE
-  echo "	</Directory>">>$FILE
-  echo "	ErrorLog \${APACHE_LOG_DIR}/error.log">>$FILE
-  echo "	LogLevel warn">>$FILE
-  echo "	CustomLog \${APACHE_LOG_DIR}/access.log combined">>$FILE
-  echo "</VirtualHost>">>$FILE
-
-check
-
-echo "• Включаем модуль ${red}mod_rewrite${green} для ${red}Apache2${green} •"
-a2enmod rewrite > /dev/null 2>&1 && check
-echo "• Перезагружаем ${red}Apache2${green} •"
-service apache2 restart	> /dev/null 2>&1 && check
 
 DIR="/var/www"
 CRONKEY=$(pwgen -cns -1 6)
