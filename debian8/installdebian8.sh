@@ -4,6 +4,13 @@ MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
 #############Цвета#############
+Info()
+{
+	Infon "$@\n"
+}
+Infon() {
+	printf "\033[1;32m$@\033[0m"
+}
 red=$(tput setf 4)
 green=$(tput setf 2)
 reset=$(tput sgr0)
@@ -35,7 +42,7 @@ while true; do
 read -p "${green}Вы уверены, что хотите установить полностью ${red}BSPanel${green}?(${red}Y${green}/${red}N${green}): " yn
 case $yn in
   [Yy]* ) break;;
-  [Nn]* ) menu;;
+  [Nn]* ) source /root/install/bspanel_starter.sh;;
   * ) echo "Ответьте, пожалуйста ${red}Y${green} или ${red}N${green}.";;
 esac
 done
