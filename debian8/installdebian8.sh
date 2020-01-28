@@ -1,5 +1,4 @@
 #!/bin/sh
-
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
@@ -23,10 +22,10 @@ cyan=$(tput setaf 6)
 check()
 {
   if [ $? -eq 0 ]; then
-  echo -n "${green}[OK]${green}"
+  echo "${green}[OK]${green}"
   tput sgr0
   else
-  echo -n "${red}[FAIL]${red}"
+  echo "${red}[FAIL]${red}"
   tput sgr0
   fi
 }
@@ -50,20 +49,19 @@ read -p "${cyan}Пожалуйста, введите ${red}домен ${cyan}и�
 read -p "${cyan}Введите пароль от root${green}: ${yellow}" VPASS
 echo "• Начинаем установку ${red}BSPanel${green} •"
 echo "• Обновляем пакеты •"
-apt-get update > /dev/null 2>&1
-check
+apt-get update > /dev/null 2>&1 && check
 echo "• Устанавливаем пакеты ${red}pwgen wget dialog sudo unzip nano memcached git!${red} •"
-apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git > /dev/null 2>&1 
-check
+apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git > /dev/null 2>&1 && check
 MYPASS=$(pwgen -cns -1 16)
 MYPASS2=$(pwgen -cns -1 16)
 ###################################Пакеты##################################################################
-echo "• Добавляем репозитории •"
+echo "• Добавляем пакеты •"
 sh /root/install/debian8/sources.sh
 echo "• Обновляем пакеты •"
 apt-get update -y > /dev/null 2>&1
-apt-get upgrade -y > /dev/null 2>&1
-check
+apt-get upgrade -y > /dev/null 2>&1 && check
+echo mysql-server mysql-server/root_password select "$MYPASS" | debconf-set-selections
+echo mysql-server mysql-server/root_password_again select "$MYPASS" | debconf-set-selections
 ###################################Пакеты###################################################################
 
 ###################################PHP##################################################################
