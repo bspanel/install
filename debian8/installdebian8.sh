@@ -23,10 +23,10 @@ cyan=$(tput setaf 6)
 check()
 {
   if [ $? -eq 0 ]; then
-  echo -n "${green}[OK]${green}"
+  echo -en "${green}[OK]${green}"
   tput sgr0
   else
-  echo -n "${red}[FAIL]${red}"
+  echo -en "${red}[FAIL]${red}"
   tput sgr0
   fi
 }
@@ -56,7 +56,7 @@ apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git > /
 MYPASS=$(pwgen -cns -1 16)
 MYPASS2=$(pwgen -cns -1 16)
 ###################################Пакеты##################################################################
-source /root/install/debian8/sources.sh
+sh /root/install/debian8/sources.sh
 echo "• Обновляем пакеты •"
 apt-get update -y > /dev/null 2>&1
 apt-get upgrade -y > /dev/null 2>&1 && check
@@ -65,15 +65,15 @@ echo mysql-server mysql-server/root_password_again select "$MYPASS" | debconf-se
 ###################################Пакеты###################################################################
 
 ###################################PHP##################################################################
-source /root/install/debian8/php.sh
+sh /root/install/debian8/php.sh
 ###################################PHP###################################################################
 
 ###################################Apache2###################################################################
-source ./apache.sh
+sh /root/install/debian8/apache.sh
 ###################################Apache2###################################################################
 
 ###################################Nginx###################################################################
-source ./nginx.sh
+sh /root/install/debian8/nginx.sh
 ###################################Nginx###################################################################
 echo "• Устанавливаем ${red}phpMyAdmin${green} •"
 echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
