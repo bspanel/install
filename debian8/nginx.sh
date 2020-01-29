@@ -25,9 +25,10 @@ cyan=$(tput setaf 6)
 #############Цвета#############
 echo "Устанавливаем Nginx"
 apt-get install nginx
-sudo /etc/init.d/nginx start
+sudo /etc/init.d/nginx stop
 echo "Настройка проксирования в Nginx"
 sudo rm /etc/nginx/sites-enabled/default
+sudo rm /etc/nginx/nginx.conf
 FILE='/etc/nginx/nginx.conf'
   echo "user www-data;">>$FILE
   echo "worker_processes $YADRO;">>$FILE
@@ -72,4 +73,18 @@ FILE='/etc/nginx/sites-available/bspanel'
   echo "	}">>$FILE
   echo "}">>$FILE
   sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel
+FILE='/etc/nginx/proxy.conf'
+  echo "proxy_redirect              off;">>$FILE
+  echo "proxy_set_header            Host $host;">>$FILE
+  echo "proxy_set_header            X-Real-IP $remote_addr;">>$FILE
+  echo "proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;">>$FILE
+  echo "client_max_body_size        10m;">>$FILE
+  echo "client_body_buffer_size     128k;">>$FILE
+  echo "proxy_connect_timeout       90;">>$FILE
+  echo "proxy_send_timeout          90;">>$FILE
+  echo "proxy_read_timeout          90;">>$FILE
+  echo "proxy_buffer_size           4k;">>$FILE
+  echo "proxy_buffers               4 32k;">>$FILE
+  echo "proxy_busy_buffers_size     64k;">>$FILE
+  echo "proxy_temp_file_write_size  64k;">>$FILE
   service nginx start && check
