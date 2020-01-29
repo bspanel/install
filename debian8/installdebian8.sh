@@ -46,6 +46,11 @@ case $yn in
 esac
 done
 read -p "${cyan}Пожалуйста, введите ${red}домен ${cyan}или ${red}IP${green}: ${cyan}" DOMAIN
+sed -i "s/domain/${DOMAIN}/g" /root/install/debian8/config
+read -p "${cyan}Пожалуйста, введите ${red}IP${green}: ${cyan}" IPADR
+sed -i "s/ipadress/${IPADR}/g" /root/install/debian8/config
+read -p "${cyan}Пожалуйста, введите ${red}количество ядер${green}: ${cyan}" YADRO
+sed -i "s/yadro/${YADRO}/g" /root/install/debian8/config
 read -p "${cyan}Введите пароль от root${green}: ${yellow}" VPASS
 echo "• Начинаем установку ${red}BSPanel${green} •"
 echo "• Обновляем пакеты •"
