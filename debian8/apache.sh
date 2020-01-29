@@ -53,4 +53,4 @@ FILE='/etc/apache2/sites-available/000-default.conf'
 check
 echo "• Перезагружаем ${red}Apache2${green} •"
 service apache2 restart	> /dev/null 2>&1 && check
-echo "• Проверка ${red}Apache2${green} •" check
+echo "• Проверка ${red}Apache2${green} •" && check
