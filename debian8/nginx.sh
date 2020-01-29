@@ -39,6 +39,7 @@ FILE='/etc/nginx/nginx.conf'
   echo "worker_connections  1024;">>$FILE
   echo "}">>$FILE
   echo "http {">>$FILE
+  echo "	include       /etc/nginx/mime.types;">>$FILE
   echo "	default_type  application/octet-stream;">>$FILE
   echo "	access_log  /var/log/nginx/access.log;">>$FILE
   echo "	sendfile        on;">>$FILE
@@ -54,36 +55,34 @@ FILE='/etc/nginx/nginx.conf'
   echo "}">>$FILE
 sudo /etc/init.d/nginx stop
 FILE='/etc/nginx/sites-available/bspanel'
-  echo "upstream backend {">>$FILE
-  echo "    server 127.0.0.1:8080;">>$FILE
-  echo "}">>$FILE
-  echo "">>$FILE
-  echo "server {">>$FILE
-  echo "    listen   80;">>$FILE
-  echo "    server_name www.$DOMAIN $DOMAIN;">>$FILE
-  echo "    access_log /var/www/logs/nginx_access.log;">>$FILE
-  echo "    error_log /var/www/logs/nginx_error.log;">>$FILE
-  echo "location / {">>$FILE
-  echo "	proxy_pass  http://backend;">>$FILE
-  echo "	include     /etc/nginx/proxy.conf;">>$FILE
-  echo "}">>$FILE
-  echo "	location ~* \.(jpg|jpeg|gif|png|ico|css|bmp|swf|js)$ {">>$FILE
-  echo "	root /var/www/;">>$FILE
-  echo "	}">>$FILE
-  echo "}">>$FILE
+echo "upstream backend {
+server 127.0.0.1:8080;
+ }
+server {
+listen   80;
+server_name www.$DOMAIN $DOMAIN;
+access_log /var/log/nginx/access.log;
+error_log /var/log/nginx/error.log;
+location / {
+location ~ [^/]\.ph(p\d*|tml)$ {
+try_files /does_not_exists @fallback;
+    }
+location ~* ^.+\.(jpg|jpeg|gif|png|svg|js|css|mp3|ogg|mpe?g|avi|zip|gz|bz2?|rar|swf)$ {
+try_files $uri $uri/ @fallback;
+}
+location / {
+try_files /does_not_exists @fallback;
+    }
+}
+location @fallback {
+proxy_pass http://127.0.0.1:8080;
+proxy_redirect http://127.0.0.1:8080 /;
+proxy_set_header Host $host;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Forwarded-Port $server_port;
+    }
+} " >$FILE
   sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel
-FILE='/etc/nginx/proxy.conf'
-  echo "proxy_redirect              off;">>$FILE
-  echo "proxy_set_header            Host $host;">>$FILE
-  echo "proxy_set_header            X-Real-IP $remote_addr;">>$FILE
-  echo "proxy_set_header            X-Forwarded-For $proxy_add_x_forwarded_for;">>$FILE
-  echo "client_max_body_size        10m;">>$FILE
-  echo "client_body_buffer_size     128k;">>$FILE
-  echo "proxy_connect_timeout       90;">>$FILE
-  echo "proxy_send_timeout          90;">>$FILE
-  echo "proxy_read_timeout          90;">>$FILE
-  echo "proxy_buffer_size           4k;">>$FILE
-  echo "proxy_buffers               4 32k;">>$FILE
-  echo "proxy_busy_buffers_size     64k;">>$FILE
-  echo "proxy_temp_file_write_size  64k;">>$FILE
+  mv /root/install/debian8/proxy.conf /etc/nginx/proxy.conf
   service nginx start && check
