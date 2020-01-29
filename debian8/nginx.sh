@@ -39,7 +39,6 @@ FILE='/etc/nginx/nginx.conf'
   echo "worker_connections  1024;">>$FILE
   echo "}">>$FILE
   echo "http {">>$FILE
-  echo "	include       /etc/nginx/mime.types;">>$FILE
   echo "	default_type  application/octet-stream;">>$FILE
   echo "	access_log  /var/log/nginx/access.log;">>$FILE
   echo "	sendfile        on;">>$FILE
