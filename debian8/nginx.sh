@@ -24,11 +24,11 @@ pink=$(tput setaf 5)
 cyan=$(tput setaf 6)
 #############Цвета#############
 echo "Устанавливаем Nginx"
-apt-get install nginx
-sudo /etc/init.d/nginx stop
+apt-get install nginx > /dev/null 2>&1
+sudo /etc/init.d/nginx stop > /dev/null 2>&1
 echo "Настройка проксирования в Nginx"
-sudo rm /etc/nginx/sites-enabled/default
-sudo rm /etc/nginx/nginx.conf
+sudo rm /etc/nginx/sites-enabled/default > /dev/null 2>&1
+sudo rm /etc/nginx/nginx.conf > /dev/null 2>&1
 FILE='/etc/nginx/nginx.conf'
   echo "user www-data;">>$FILE
   echo "worker_processes $YADRO;">>$FILE
@@ -53,7 +53,7 @@ FILE='/etc/nginx/nginx.conf'
   echo "	include /etc/nginx/conf.d/*.conf;">>$FILE
   echo "	include /etc/nginx/sites-enabled/*;">>$FILE
   echo "}">>$FILE
-sudo /etc/init.d/nginx stop
+sudo /etc/init.d/nginx stop > /dev/null 2>&1
 FILE='/etc/nginx/sites-available/bspanel'
 echo "upstream backend {
 server 127.0.0.1:8080;
@@ -68,7 +68,7 @@ location ~ [^/]\.ph(p\d*|tml)$ {
 try_files /does_not_exists @fallback;
     }
 location ~* ^.+\.(jpg|jpeg|gif|png|svg|js|css|mp3|ogg|mpe?g|avi|zip|gz|bz2?|rar|swf)$ {
-try_files $uri $uri/ @fallback;
+try_files "\"$uri"" "\"$uri""/ @fallback;
 }
 location / {
 try_files /does_not_exists @fallback;
@@ -77,12 +77,12 @@ try_files /does_not_exists @fallback;
 location @fallback {
 proxy_pass http://127.0.0.1:8080;
 proxy_redirect http://127.0.0.1:8080 /;
-proxy_set_header Host $host;
-proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-proxy_set_header X-Forwarded-Proto $scheme;
-proxy_set_header X-Forwarded-Port $server_port;
+proxy_set_header Host "\"$host\"";
+proxy_set_header X-Forwarded-For "\"$proxy_add_x_forwarded_for\"";
+proxy_set_header X-Forwarded-Proto "\"$scheme\"";
+proxy_set_header X-Forwarded-Port "\"$server_port\"";
     }
-} " >$FILE
-  sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel
-  mv /root/install/debian8/proxy.conf /etc/nginx/proxy.conf
-  service nginx start && check
+} " >$FILE 
+  sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel > /dev/null 2>&1
+  mv /root/install/debian8/proxy.conf /etc/nginx/proxy.conf > /dev/null 2>&1
+  service nginx start > /dev/null 2>&1 && check 

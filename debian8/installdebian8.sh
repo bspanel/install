@@ -58,7 +58,8 @@ apt-get update > /dev/null 2>&1 && check
 echo "• Устанавливаем пакеты ${red}pwgen wget dialog sudo unzip nano memcached git!${red} •"
 apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git > /dev/null 2>&1 && check
 MYPASS=$(pwgen -cns -1 16)
-MYPASS2=$(pwgen -cns -1 16)
+sed -i "s/mypass/${MYPASS}/g" /root/install/debian8/config
+MYPASS2=$(pwgen -cns -1 16) 
 ###################################Пакеты##################################################################
 echo "• Добавляем пакеты •"
 sh /root/install/debian8/sources.sh && check
@@ -78,28 +79,10 @@ sh /root/install/debian8/apache.sh
 ###################################Nginx###################################################################
 sh /root/install/debian8/nginx.sh
 ###################################Nginx###################################################################
-echo "• Устанавливаем ${red}phpMyAdmin${green} •"
-echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/admin-user string root" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/admin-pass password $MYPASS" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/app-pass password $MYPASS" |debconf-set-selections
-echo "phpmyadmin phpmyadmin/app-password-confirm password $MYPASS" | debconf-set-selections
-echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
-apt-get install -y phpmyadmin > /dev/null 2>&1 && check
-echo  "• Устанавливаем ${red}mysql-server ${red}5${green}.${red}6${green} •"
-echo mysql-apt-config mysql-apt-config/select-server select mysql-5.6 | debconf-set-selections
-echo mysql-apt-config mysql-apt-config/select-product select Ok | debconf-set-selections
-wget https://dev.mysql.com/get/mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
-export DEBIAN_FRONTEND=noninteractive
-dpkg -i mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
-apt-get update > /dev/null 2>&1
-apt-get --yes --force-yes install mysql-server > /dev/null 2>&1
-sudo mysql_upgrade -u root -p$MYPASS --force --upgrade-system-tables > /dev/null 2>&1
-service mysql restart > /dev/null 2>&1
-rm mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
-cd ~ > /dev/null 2>&1
-sudo mysql_upgrade -u root -p$MYPASS --force --upgrade-system-tables > /dev/null 2>&1
-service mysql restart > /dev/null 2>&1 && check
+
+###################################MYSQL###################################################################
+sh /root/install/debian8/mysql.sh
+###################################MYSQl###################################################################
 echo "• Устанавливаем библиотеку ${red}SSH2${green} •"
 if [ "$OS" = "" ]; then
 apt-get install -y curl php5-ssh2 > /dev/null 2>&1
@@ -107,42 +90,9 @@ else
 apt-get install -y libssh2-php > /dev/null 2>&1
 fi
 check
-
-DIR="/var/www"
-CRONKEY=$(pwgen -cns -1 6)
-CRONPANEL="/etc/crontab"
-
-echo "• Добавляем ${red}сron задания${green} •"
-
-sed -i "s/320/0/g" $CRONPANEL
-echo "">>$CRONPANEL
-echo "*/2 * * * * screen -dmS scan_servers bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads scan_servers'">>$CRONPANEL
-echo "*/5 * * * * screen -dmS scan_servers_load bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads scan_servers_load'">>$CRONPANEL
-echo "*/5 * * * * screen -dmS scan_servers_route bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads scan_servers_route'">>$CRONPANEL
-echo "* * * * * screen -dmS scan_servers_down bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads scan_servers_down'">>$CRONPANEL
-echo "*/10 * * * * screen -dmS notice_help bash -c 'cd ${DIR} && php cron.php ${CRONKEY} notice_help'">>$CRONPANEL
-echo "*/15 * * * * screen -dmS scan_servers_stop bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads scan_servers_stop'">>$CRONPANEL
-echo "*/15 * * * * screen -dmS scan_servers_copy bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads scan_servers_copy'">>$CRONPANEL
-echo "*/30 * * * * screen -dmS notice_server_overdue bash -c 'cd ${DIR} && php cron.php ${CRONKEY} notice_server_overdue'">>$CRONPANEL
-echo "*/30 * * * * screen -dmS preparing_web_delete bash -c 'cd ${DIR} && php cron.php ${CRONKEY} preparing_web_delete'">>$CRONPANEL
-echo "0 * * * * screen -dmS scan_servers_admins bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads scan_servers_admins'">>$CRONPANEL
-echo "* * * * * screen -dmS control_delete bash -c 'cd ${DIR} && php cron.php ${CRONKEY} control_delete'">>$CRONPANEL
-echo "* * * * * screen -dmS control_install bash -c 'cd ${DIR} && php cron.php ${CRONKEY} control_install'">>$CRONPANEL
-echo "*/2 * * * * screen -dmS scan_control bash -c 'cd ${DIR} && php cron.php ${CRONKEY} scan_control'">>$CRONPANEL
-echo "*/2 * * * * screen -dmS control_scan_servers bash -c 'cd ${DIR} && php cron.php ${CRONKEY} control_threads control_scan_servers'">>$CRONPANEL
-echo "*/5 * * * * screen -dmS control_scan_servers_route bash -c 'cd ${DIR} && php cron.php ${CRONKEY} control_threads control_scan_servers_route'">>$CRONPANEL
-echo "* * * * * screen -dmS control_scan_servers_down bash -c 'cd ${DIR} && php cron.php ${CRONKEY} control_threads control_scan_servers_down'">>$CRONPANEL
-echo "0 * * * * screen -dmS control_scan_servers_admins bash -c 'cd ${DIR} && php cron.php ${CRONKEY} control_threads control_scan_servers_admins'">>$CRONPANEL
-echo "*/15 * * * * screen -dmS control_scan_servers_copy bash -c 'cd ${DIR} && php cron.php ${CRONKEY} control_threads control_scan_servers_copy'">>$CRONPANEL
-echo "0 0 * * * screen -dmS graph_servers_day bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads graph_servers_day'">>$CRONPANEL
-echo "0 * * * * screen -dmS graph_servers_hour bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads graph_servers_hour'">>$CRONPANEL
-echo "#">>$CRONPANEL
-crontab -u root /etc/crontab
-
-echo "• Перезагружаем ${red}крон!•"
-service cron restart > /dev/null 2>&1 && check
-echo "• Перезагружаем ${red}Apache2 •"
-service apache2 restart > /dev/null 2>&1 && check
+###################################CRON###################################################################
+sh /root/install/debian8/cron.sh
+###################################CRON###################################################################
 echo "• • Началась установка ${red}BSPanel${green} в каталог ${red}/var/www${green} • •"
 cd ~ > /dev/null 2>&1
 cd /var/www/ > /dev/null 2>&1
@@ -154,11 +104,6 @@ cd ~ > /dev/null 2>&1 && check
 echo "• Выдаем права на файлы •"
 chown -R www-data:www-data /var/www/ > /dev/null 2>&1
 chmod -R 775 /var/www/ > /dev/null 2>&1 && check
-echo "• Настраиваем время на сервере •"
-echo "Europe/Moscow" > /etc/timezone
-dpkg-reconfigure tzdata -f noninteractive > /dev/null 2>&1
-sudo sed -i -r 's~^;date\.timezone =$~date.timezone = "Europe/Moscow"~' /etc/php5/cli/php.ini > /dev/null 2>&1
-sudo sed -i -r 's~^;date\.timezone =$~date.timezone = "Europe/Moscow"~' /etc/php5/apache2/php.ini > /dev/null 2>&1 && check
 echo "• Создаем базу данных и загружаем дамп базы данных от ${red}BSPanel${green} •"
 wget $MIRROR/files/debian/bspanel.sql > /dev/null 2>&1
 MP=$MYPASS
