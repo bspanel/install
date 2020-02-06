@@ -52,6 +52,7 @@ sed -i "s/ipadress/${IPADR}/g" /root/install/debian8/config
 read -p "${cyan}Пожалуйста, введите ${red}количество ядер${green}: ${cyan}" YADRO
 sed -i "s/yadro/${YADRO}/g" /root/install/debian8/config
 read -p "${cyan}Введите пароль от root${green}: ${yellow}" VPASS
+sed -i "s/pass/${VPASS}/g" /root/install/debian8/config
 echo "• Начинаем установку ${red}BSPanel${green} •"
 echo "• Обновляем пакеты •"
 apt-get update > /dev/null 2>&1 && check

@@ -3,16 +3,6 @@
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
-check()
-{
-  if [ $? -eq 0 ]; then
-  echo "${green}[OK]${green}"
-  tput sgr0
-  else
-  echo "${red}[FAIL]${red}"
-  tput sgr0
-  fi
-}
 #############Цвета#############
 red=$(tput setf 4)
 green=$(tput setf 2)
@@ -23,8 +13,18 @@ orange=$(tput setaf 3)
 pink=$(tput setaf 5)
 cyan=$(tput setaf 6)
 #############Цвета#############
+check()
+{
+  if [ $? -eq 0 ]; then
+  echo "${green}[OK]${green}"
+  tput sgr0
+  else
+  echo "${red}[FAIL]${red}"
+  tput sgr0
+  fi
+}
 echo "Устанавливаем Nginx"
-apt-get install nginx > /dev/null 2>&1
+apt-get install -y nginx > /dev/null 2>&1
 sudo /etc/init.d/nginx stop > /dev/null 2>&1
 echo "Настройка проксирования в Nginx"
 sudo rm /etc/nginx/sites-enabled/default > /dev/null 2>&1
@@ -68,7 +68,8 @@ location ~ [^/]\.ph(p\d*|tml)$ {
 try_files /does_not_exists @fallback;
     }
 location ~* ^.+\.(jpg|jpeg|gif|png|svg|js|css|mp3|ogg|mpe?g|avi|zip|gz|bz2?|rar|swf)$ {
-try_files "\"$uri"" "\"$uri""/ @fallback;
+root /var/www;
+try_files "\$uri" "\$uri" / @fallback;
 }
 location / {
 try_files /does_not_exists @fallback;
@@ -77,12 +78,61 @@ try_files /does_not_exists @fallback;
 location @fallback {
 proxy_pass http://127.0.0.1:8080;
 proxy_redirect http://127.0.0.1:8080 /;
-proxy_set_header Host "\"$host\"";
-proxy_set_header X-Forwarded-For "\"$proxy_add_x_forwarded_for\"";
-proxy_set_header X-Forwarded-Proto "\"$scheme\"";
-proxy_set_header X-Forwarded-Port "\"$server_port\"";
+proxy_set_header Host "\$host";
+proxy_set_header X-Forwarded-For "\$proxy_add_x_forwarded_for";
+proxy_set_header X-Forwarded-Proto "\$scheme";
+proxy_set_header X-Forwarded-Port "\$server_port";
     }
-} " >$FILE 
-  sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel > /dev/null 2>&1
-  mv /root/install/debian8/proxy.conf /etc/nginx/proxy.conf > /dev/null 2>&1
-  service nginx start > /dev/null 2>&1 && check 
+} " >$FILE
+FILE='/etc/nginx/mime.types'
+echo "types {
+  text/html                             html htm shtml;
+  text/css                              css;
+  text/xml                              xml rss;
+  image/gif                             gif;
+  image/jpeg                            jpeg jpg;
+  application/x-javascript              js;
+  text/plain                            txt;
+  text/x-component                      htc;
+  text/mathml                           mml;
+  image/png                             png;
+  image/x-icon                          ico;
+  image/x-jng                           jng;
+  image/vnd.wap.wbmp                    wbmp;
+  application/java-archive              jar war ear;
+  application/mac-binhex40              hqx;
+  application/pdf                       pdf;
+  application/x-cocoa                   cco;
+  application/x-java-archive-diff       jardiff;
+  application/x-java-jnlp-file          jnlp;
+  application/x-makeself                run;
+  application/x-perl                    pl pm;
+  application/x-pilot                   prc pdb;
+  application/x-rar-compressed          rar;
+  application/x-redhat-package-manager  rpm;
+  application/x-sea                     sea;
+  application/x-shockwave-flash         swf;
+  application/x-stuffit                 sit;
+  application/x-tcl                     tcl tk;
+  application/x-x509-ca-cert            der pem crt;
+  application/x-xpinstall               xpi;
+  application/zip                       zip;
+  application/octet-stream              deb;
+  application/octet-stream              bin exe dll;
+  application/octet-stream              dmg;
+  application/octet-stream              eot;
+  application/octet-stream              iso img;
+  application/octet-stream              msi msp msm;
+  audio/mpeg                            mp3;
+  audio/x-realaudio                     ra;
+  video/mpeg                            mpeg mpg;
+  video/quicktime                       mov;
+  video/x-flv                           flv;
+  video/x-msvideo                       avi;
+  video/x-ms-wmv                        wmv;
+  video/x-ms-asf                        asx asf;
+  video/x-mng                           mng;
+}" >$FILE
+sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel > /dev/null 2>&1
+mv /root/install/debian8/proxy.conf /etc/nginx/proxy.conf > /dev/null 2>&1
+service nginx start > /dev/null 2>&1 && check 

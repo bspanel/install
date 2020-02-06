@@ -1,5 +1,6 @@
 ##########Все ваши данные сохранены в этом файле#########
-DOMAIN="domain"
-IPADR="ipadress"
-YADRO="yadro"
-MYPASS="mypass"
+DOMAIN="domain" //Домен
+IPADR="ipadress" //Айпи
+YADRO="yadro" //Кол ядер
+MYPASS="mypass" //Пароль mysql
+VPASS="pass" //Пароль вдс
