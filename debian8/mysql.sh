@@ -23,6 +23,7 @@ orange=$(tput setaf 3)
 pink=$(tput setaf 5)
 cyan=$(tput setaf 6)
 #############Цвета#############
+echo "• Устанавливаем ${red}MYSQL${green} •"
 echo mysql-server mysql-server/root_password select "$MYPASS" | debconf-set-selections
 echo mysql-server mysql-server/root_password_again select "$MYPASS" | debconf-set-selections
 
