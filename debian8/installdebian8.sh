@@ -51,7 +51,7 @@ sed -i "s/domain/${DOMAIN}/g" /root/install/debian8/config
 read -p "${cyan}Пожалуйста, введите ${red}IP${green}: ${cyan}" IPADR
 sed -i "s/ipadress/${IPADR}/g" /root/install/debian8/config
 read -p "${cyan}Пожалуйста, введите ${red}количество ядер${green}: ${cyan}" YADRO
-sed -i "s/yadro/${YADRO}/g" /root/install/debian8/config
+sed -i "s/yadro1/${YADRO}/g" /root/install/debian8/config
 read -p "${cyan}Введите пароль от root${green}: ${yellow}" VPASS
 sed -i "s/pass/${VPASS}/g" /root/install/debian8/config
 echo "• Начинаем установку ${red}BSPanel${green} •"
@@ -149,29 +149,27 @@ ln -s /usr/share/phpmyadmin /var/www/pma > /dev/null 2>&1 && check
 echo "• Удаляем папку ${red}html${green} [var/www/html] •"
 rm -r /var/www/html > /dev/null 2>&1 && check
 
-log_t "• Завершаем установку ${red}BSPanel${green} на Debian 8 •"
-  lines_1
-  info_n "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  info_n "• Панель управления ${red}BSPanel ${YELLOW}установлена!"
-  info_n "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  info_n "• Данные для входа в ${red}phpMyAdmin${YELLOW} и ${red}MySQL${green}:"
-  info_n "• ${red}Логин${green}: ${YELLOW}root"
-  info_n "• ${red}Пароль${green}: ${YELLOW}$MYPASS"
-  info_n "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  info_n "• ${red}FTP пароль${YELLOW} от ${red}MySQL${green}: ${YELLOW}$MYPASS2"
-  info_n "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  info_n "• Ссылка на ${red}BSPanel${green}: ${YELLOW}http://$DOMAIN/"
-  info_n "• Ссылка на ${red}PhpMyAdmin${green}: ${YELLOW}http://$DOMAIN/phpmyadmin"
-  info_n "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  info_n "• Данные для входа в панель управления${green}:"
-  info_n "• ${red}Логин${green}: ${YELLOW}admin"
-  info_n "• ${red}Пароль${green}: ${YELLOW}${new_pass}"
-  info_n "• ${red}Ссылка${green}: ${YELLOW}http://$DOMAIN/acp"
-  info_n "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  info_n "• ${red}Обязательно смените email и пароль после авторизации!"
-  lines_1
+echo "• Завершаем установку ${red}BSPanel${green} на Debian 8 •"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Панель управления ${red}BSPanel ${YELLOW}установлена!"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Данные для входа в ${red}phpMyAdmin${YELLOW} и ${red}MySQL${green}:"
+  echo "• ${red}Логин${green}: ${YELLOW}root"
+  echo "• ${red}Пароль${green}: ${YELLOW}$MYPASS"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• ${red}FTP пароль${YELLOW} от ${red}MySQL${green}: ${YELLOW}$MYPASS2"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Ссылка на ${red}BSPanel${green}: ${YELLOW}http://$DOMAIN/"
+  echo "• Ссылка на ${red}PhpMyAdmin${green}: ${YELLOW}http://$DOMAIN/phpmyadmin"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Данные для входа в панель управления${green}:"
+  echo "• ${red}Логин${green}: ${YELLOW}admin"
+  echo "• ${red}Пароль${green}: ${YELLOW}${new_pass}"
+  echo "• ${red}Ссылка${green}: ${YELLOW}http://$DOMAIN/acp"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• ${red}Обязательно смените email и пароль после авторизации!"
 Info
-log_t "Спасибо, что установили ${red}BSPanel${green}, Не забудьте сохранить данные"
+echo "Спасибо, что установили ${red}BSPanel${green}, Не забудьте сохранить данные"
 Info "• ${red}1${green} - Главное меню"
 Info "• ${red}0${green} - Выйти"
 Info

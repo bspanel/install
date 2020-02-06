@@ -23,12 +23,14 @@ check()
   tput sgr0
   fi
 }
-echo "Устанавливаем Nginx"
+echo "• Устанавливаем ${red}NGINX${green} •"
 apt-get install -y nginx > /dev/null 2>&1
 sudo /etc/init.d/nginx stop > /dev/null 2>&1
 echo "Настройка проксирования в Nginx"
 sudo rm /etc/nginx/sites-enabled/default > /dev/null 2>&1
 sudo rm /etc/nginx/nginx.conf > /dev/null 2>&1
+check
+echo "• Настраиваем ${red}NGINX${green} •"
 FILE='/etc/nginx/nginx.conf'
   echo "user www-data;">>$FILE
   echo "worker_processes $YADRO;">>$FILE
@@ -135,4 +137,4 @@ echo "types {
 }" >$FILE
 sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel > /dev/null 2>&1
 mv /root/install/debian8/proxy.conf /etc/nginx/proxy.conf > /dev/null 2>&1
-service nginx start > /dev/null 2>&1 && check 
+service nginx start > /dev/null 2>&1 && check
