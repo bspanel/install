@@ -57,8 +57,8 @@ sed -i "s/pass/${VPASS}/g" /root/install/debian8/config
 echo "• Начинаем установку ${red}BSPanel${green} •"
 echo "• Обновляем пакеты •"
 apt-get update > /dev/null 2>&1 && check
-echo "• Устанавливаем пакеты ${red}pwgen wget dialog sudo unzip nano memcached git!${red} •"
-apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git > /dev/null 2>&1 && check
+echo "• Устанавливаем необходимые пакеты для ${red}серверной части​${green} •"
+apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git lsb-release lib32stdc++6 sudo libreadline5 screen htop nano tcpdump lib32z1 ethstatus ssh zip unzip mc qstat gdb lib32gcc1 nload ntpdate lsof > /dev/null 2>&1 && check
 MYPASS=$(pwgen -cns -1 16)
 sed -i "s/mypass/${MYPASS}/g" /root/install/debian8/config
 MYPASS2=$(pwgen -cns -1 16) 
@@ -85,6 +85,10 @@ sh /root/install/debian8/nginx.sh
 ###################################MYSQL####################################################################
 sh /root/install/debian8/mysql.sh
 ###################################MYSQl####################################################################
+
+###################################TIME####################################################################
+sh /root/install/debian8/time.sh
+###################################TIME####################################################################
 echo "• Устанавливаем библиотеку ${red}SSH2${green} •"
 if [ "$OS" = "" ]; then
 apt-get install -y curl php5-ssh2 > /dev/null 2>&1
@@ -103,10 +107,6 @@ sh /root/install/debian8/ioncube.sh
 ###################################DDOS PROTECT##################################################################
 sh /root/install/debian8/ddos.sh
 ###################################DDOS PROTECT##################################################################
-echo "• Устанавливаем необходимые пакеты для ${red}серверной части​${green} •"
-apt-get install -y lsb-release > /dev/null 2>&1
-apt-get install -y lib32stdc++6 > /dev/null 2>&1
-apt-get install -y libreadline5 > /dev/null 2>&1
 OS=$(lsb_release -s -i -c -r | xargs echo |sed 's; ;-;g' | grep Ubuntu)
 if [ "$OS" = "" ]; then
   sudo dpkg --add-architecture i386 > /dev/null 2>&1
@@ -118,8 +118,6 @@ else
   apt-get update > /dev/null 2>&1
   sudo apt-get install -y gcc-multilib > /dev/null 2>&1
 fi
-apt-get install -y sudo screen htop nano tcpdump ethstatus ssh zip unzip mc qstat gdb lib32gcc1 nload ntpdate lsof > /dev/null 2>&1
-apt-get install -y lib32z1 > /dev/null 2>&1 && check
 ###################################java##################################################################
 sh /root/install/debian8/java.sh
 ###################################java##################################################################
@@ -148,8 +146,8 @@ apt-get update > /dev/null 2>&1
 service apache2 restart > /dev/null 2>&1
 service mysql restart > /dev/null 2>&1
 ln -s /usr/share/phpmyadmin /var/www/pma > /dev/null 2>&1 && check
-  echo "• Удаляем папку ${red}html${green} [var/www/html] •"
-  rm -r /var/www/html > /dev/null 2>&1 && check
+echo "• Удаляем папку ${red}html${green} [var/www/html] •"
+rm -r /var/www/html > /dev/null 2>&1 && check
 
 log_t "• Завершаем установку ${red}BSPanel${green} на Debian 8 •"
   lines_1

@@ -4,3 +4,4 @@ IPADR="ipadress" //Айпи
 YADRO="yadro" //Кол ядер
 MYPASS="mypass" //Пароль mysql
 VPASS="pass" //Пароль вдс
+new_pass="new_pas"
