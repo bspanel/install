@@ -28,5 +28,6 @@ echo "• Настраиваем время на сервере •"
 echo "Europe/Moscow" > /etc/timezone
 dpkg-reconfigure tzdata -f noninteractive > /dev/null 2>&1
 sudo sed -i -r 's~^;date\.timezone =$~date.timezone = "Europe/Moscow"~' /etc/php5/cli/php.ini > /dev/null 2>&1
-sudo sed -i -r 's~^;date\.timezone =$~date.timezone = "Europe/Moscow"~' /etc/php5/apache2/php.ini > /dev/null 2>&1 && check
+sudo sed -i -r 's~^;date\.timezone =$~date.timezone = "Europe/Moscow"~' /etc/php5/apache2/php.ini > /dev/null 2>&1
+check
 ###################################Время###################################################################
