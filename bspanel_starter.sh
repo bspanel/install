@@ -37,9 +37,11 @@ install_check()
 	menu
 	else
 	echo "${green}|---------------Скачиваем необходимые файлы---------------${reset}"
-	apt-get update && apt-get upgrade > /dev/null 2>&1
+	apt-get update > /dev/null 2>&1
+	apt-get upgrade > /dev/null 2>&1
 	apt-get install -y git > /dev/null 2>&1
 	git clone https://github.com/bspanel/install.git > /dev/null 2>&1
+	menu
 	fi
 }
 check_os()
