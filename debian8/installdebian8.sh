@@ -57,7 +57,7 @@ while true; do
 read -p "${green}Вы уверены, что хотите установить полностью ${red}BSPanel${green}?(${red}Y${green}/${red}N${green}): " yn
 case $yn in
   [Yy]* ) break;;
-  [Nn]* ) sh /root/install/bspanel_starter.sh;;
+  [Nn]* ) sh /root/bspanel_starter.sh;;
   * ) echo "Ответьте, пожалуйста ${red}Y${green} или ${red}N${green}.";;
 esac
 done
@@ -194,7 +194,7 @@ Info "• ${red}0${green} - Выйти"
 Info
 read -p "Пожалуйста, введите номер меню: " case
 case $case in
-  1) bspanel_starter;;
+  1) sh /root/bspanel_starter.sh;;
   0) exit;;
 esac
 }

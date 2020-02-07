@@ -46,7 +46,10 @@ install_check()
 }
 check_os()
 {
-OS=$(lsb_release -s -i -c -r | xargs echo |sed 's; ;-;g' | grep Ubuntu)
+if [ -f "/etc/debian_version" ]; then
+	OS=`cat /etc/issue.net | awk '{print $1$3}'`
+	echo "Detected OS Version: "$OS
+fi
 if [ "$OS" = "Debian8" ]; then
   echo "${green}|---------------Найдена OS: DEBIAN 8---------------${reset}"
   cd /root/install/debian8/
