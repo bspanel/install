@@ -28,7 +28,9 @@ orange=$(tput setaf 3)
 pink=$(tput setaf 5)
 cyan=$(tput setaf 6)
 echo "Скачиваем файлы"
-git clone https://github.com/bspanel/install.git
+apt-get update && apt-get upgrade > /dev/null 2>&1
+apt-get install -y git > /dev/null 2>&1
+git clone https://github.com/bspanel/install.git > /dev/null 2>&1
 menu()
 {
 	clear
