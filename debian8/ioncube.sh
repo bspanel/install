@@ -24,7 +24,6 @@ check()
   fi
 }
 echo "• Приступаем к установке ${red}Ioncube Loader${green} •"
-  tar xvfz ioncube_loaders_lin_x86.tar.gz > /dev/null 2>&1
 wget http://core.brainycp.com/src/package/ioncube_el6_x86-64.tar.gz &>/dev/null
 tar zxf ioncube_el6_x86-64.tar.gz
 cp /etc/brainy/src/ioncube/ioncube_loader_lin_5.6.so /etc/brainy/src/compiled/php5/ioncube_loader_lin_5.6.so
