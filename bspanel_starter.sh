@@ -19,18 +19,46 @@ Info()
 Infon() {
 	printf "\033[1;32m$@\033[0m"
 }
-red=$(tput setf 4)
-green=$(tput setf 2)
+RED=$(tput setaf 1)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+white=$(tput setaf 7)
 reset=$(tput sgr0)
 toend=$(tput hpa $(tput cols))$(tput cub 6)
-blue=$(tput setaf 4)
-orange=$(tput setaf 3)
-pink=$(tput setaf 5)
-cyan=$(tput setaf 6)
-echo "Скачиваем файлы"
-apt-get update && apt-get upgrade > /dev/null 2>&1
-apt-get install -y git > /dev/null 2>&1
-git clone https://github.com/bspanel/install.git > /dev/null 2>&1
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+MAGENTA=$(tput setaf 5)
+LIME_YELLOW=$(tput setaf 190)
+CYAN=$(tput setaf 6)
+install_check()
+{
+	if [ -f "/root/install" ]; then
+	menu
+	else
+	echo "${green}|---------------Скачиваем необходимые файлы---------------${reset}"
+	apt-get update && apt-get upgrade > /dev/null 2>&1
+	apt-get install -y git > /dev/null 2>&1
+	git clone https://github.com/bspanel/install.git > /dev/null 2>&1
+	fi
+}
+check_os()
+{
+OS=$(lsb_release -s -i -c -r | xargs echo |sed 's; ;-;g' | grep Ubuntu)
+if [ "$OS" = "Debian8" ]; then
+  echo "${green}|---------------Найдена OS: DEBIAN 8---------------${reset}"
+  cd /root/install/debian8/
+  sh installdebian8.sh
+fi
+if [ "$OS" = "Debian7" ]; then
+  echo "${green}|---------------Поддержка DEBIAN 7 не доступна---------------${reset}"
+  exit
+fi
+if [ "$OS" = "Debian9" ]; then
+ echo "${green}|---------------Подддержка DEBIAN 9 временно не доступна---------------${reset}"
+ exit
+fi
+}
 menu()
 {
 	clear
@@ -44,7 +72,7 @@ menu()
 	infomenu2
 	read -p "${cyan}Пожалуйста, введите пункт меню: " case
 	case $case in
-		1) install_check;;
+		1) check_os;;
 		2) settings_location;;
 		3) install_web;;
 		4) mce_pass;;
@@ -52,4 +80,4 @@ menu()
 		0) exit;;
 	esac
 }
-menu
+install_check
