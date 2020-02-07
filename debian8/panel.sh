@@ -45,7 +45,7 @@ VP=$VPASS
 IP=$DOMAIN
 IP1=$IPVDS
 new_pass=$(pwgen -cns -1 7)
-sed -i "s/new_adminpass/${new_pass}/g" /root/install/debian8/config
+sed -i "s/account_admin/${new_pass}/g" /root/install/debian8/config
 account_pass=`wget -qO- http://system.bspanel.ru/api/md5.php?passwd=${new_pass} | sed -e 's/<[^>]*>//g'`
 sed -i "s/mysqlp/${MP}/g" /var/www/system/data/mysql.php
 sed -i "s/bspanel_addr/${IP1}/g" /var/www/system/data/web.php

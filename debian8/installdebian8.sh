@@ -183,7 +183,7 @@ echo "• Завершаем установку ${red}BSPanel${green} на Debia
   echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
   echo "• Данные для входа в панель управления${green}:"
   echo "• ${red}Логин${green}: ${YELLOW}admin"
-  echo "• ${red}Пароль${green}: ${YELLOW}${new_adminpass}"
+  echo "• ${red}Пароль${green}: ${YELLOW}${account_admin}"
   echo "• ${red}Ссылка${green}: ${YELLOW}http://$DOMAIN/acp"
   echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
   echo "• ${red}Обязательно смените email и пароль после авторизации!"
