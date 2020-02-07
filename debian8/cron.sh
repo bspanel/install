@@ -59,7 +59,7 @@ echo "0 0 * * * screen -dmS graph_servers_day bash -c 'cd ${DIR} && php cron.php
 echo "0 * * * * screen -dmS graph_servers_hour bash -c 'cd ${DIR} && php cron.php ${CRONKEY} threads graph_servers_hour'">>$CRONPANEL
 echo "#">>$CRONPANEL
 crontab -u root /etc/crontab
-
+check
 echo "• Перезагружаем ${red}крон!•"
 service cron restart > /dev/null 2>&1 && check
 echo "• Перезагружаем ${red}Apache2 •"
