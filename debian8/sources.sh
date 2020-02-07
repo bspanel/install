@@ -20,10 +20,10 @@ CYAN=$(tput setaf 6)
 check()
 {
   if [ $? -eq 0 ]; then
-  echo -n "${green}[OK]${green}"
+  echo "${green}[OK]${green}"
   tput sgr0
   else
-  echo -n "${red}[FAIL]${red}"
+  echo "${red}[FAIL]${red}"
   tput sgr0
   fi
 }
