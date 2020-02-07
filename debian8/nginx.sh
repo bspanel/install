@@ -30,6 +30,7 @@ check()
 echo "• Устанавливаем ${red}NGINX${green} •"
 apt-get install -y nginx > /dev/null 2>&1
 sudo /etc/init.d/nginx stop > /dev/null 2>&1
+check
 echo "• Настройка проксирования ${red}в NGINX${green} •"
 sudo rm /etc/nginx/sites-enabled/default > /dev/null 2>&1
 sudo rm /etc/nginx/nginx.conf > /dev/null 2>&1

@@ -28,8 +28,8 @@ check()
   fi
 }
 echo "• Приступаем к установке ${red}Ioncube Loader${green} •"
-wget http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.zip
-unzip ioncube_loaders_lin_x86-64.zip
+wget http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.zip > /dev/null 2>&1
+unzip ioncube_loaders_lin_x86-64.zip > /dev/null 2>&1
 cp ioncube/ioncube_loader_lin_5.6.so /usr/lib/php5/20131226/
 cp ioncube/ioncube_loader_lin_5.6_ts.so /usr/lib/php5/20131226/
 rm -R ioncube*

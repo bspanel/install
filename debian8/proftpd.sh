@@ -74,7 +74,7 @@ chmod -R 750 /copy
 chown root:root /copy
 chmod -R 750 /etc/proftpd
 wget -O proftpd_sqldump $MIRROR/files/debian/proftpd/proftpd_sqldump.txt > /dev/null 2>&1
-mysql -uroot -p$MYPASS -e "CREATE DATABASE ftp;"; > /dev/null 2>&1
+mysql -uroot -p$MYPASS -e "CREATE DATABASE ftp;"; > /dev/null 2>&1 && check
 mysql -uroot -p$MYPASS -e "CREATE USER 'ftp'@'localhost' IDENTIFIED BY '$MYPASS2';"; > /dev/null 2>&1
 mysql -uroot -p$MYPASS -e "GRANT ALL PRIVILEGES ON ftp . * TO 'ftp'@'localhost';"; > /dev/null 2>&1
 mysql -uroot -p$MYPASS ftp < proftpd_sqldump; > /dev/null 2>&1
