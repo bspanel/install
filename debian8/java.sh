@@ -4,21 +4,18 @@ MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
 #############Цвета#############
-Info()
-{
-	Infon "$@\n"
-}
-Infon() {
-	printf "\033[1;32m$@\033[0m"
-}
-red=$(tput setf 4)
-green=$(tput setf 2)
+RED=$(tput setaf 1)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+white=$(tput setaf 7)
 reset=$(tput sgr0)
 toend=$(tput hpa $(tput cols))$(tput cub 6)
-blue=$(tput setaf 4)
-orange=$(tput setaf 3)
-pink=$(tput setaf 5)
-cyan=$(tput setaf 6)
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+MAGENTA=$(tput setaf 5)
+LIME_YELLOW=$(tput setaf 190)
+CYAN=$(tput setaf 6)
 #############Цвета#############
 check()
 {

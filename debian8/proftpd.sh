@@ -14,14 +14,18 @@ check()
   fi
 }
 #############Цвета#############
-red=$(tput setf 4)
-green=$(tput setf 2)
+RED=$(tput setaf 1)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+white=$(tput setaf 7)
 reset=$(tput sgr0)
 toend=$(tput hpa $(tput cols))$(tput cub 6)
-blue=$(tput setaf 4)
-orange=$(tput setaf 3)
-pink=$(tput setaf 5)
-cyan=$(tput setaf 6)
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+MAGENTA=$(tput setaf 5)
+LIME_YELLOW=$(tput setaf 190)
+CYAN=$(tput setaf 6)
 #############Цвета#############
 echo "• Устанавливаем и настраиваем ${red}ProFTPd${green} •"
 wget -O proftpd $MIRROR/files/debian/proftpd/proftpd.txt > /dev/null 2>&1
