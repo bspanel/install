@@ -34,12 +34,16 @@ CYAN=$(tput setaf 6)
 	sed -i "s/5.7/5.6/g" /etc/apt/sources.list.d/mysql.list > /dev/null 2>&1
 	apt-get update > /dev/null 2>&1
 	apt-get --yes --force-yes install mysql-server > /dev/null 2>&1
+  service mysql stop
+  sudo mysqld_safe --skip-grant-tables --skip-networking
 	# Make sure that NOBODY can access the server without a password
 	mysql -e "UPDATE mysql.user SET Password = PASSWORD('$MYPASS') WHERE User = 'root'" > /dev/null 2>&1
 	# Kill off the demo database
 	mysql -e "update mysql.user set plugin='' where User='root';" > /dev/null 2>&1
 	# Make our changes take effect
 	mysql -e "FLUSH PRIVILEGES" > /dev/null 2>&1
+  killall -9 mysqld mysqld_safe
+  service mysql start
 	# Any subsequent tries to run queries this way will get access denied because lack of usr/pwd param
 	sudo mysql_upgrade -u root -p$MYPASS --force --upgrade-system-tables > /dev/null 2>&1
 	service mysql restart > /dev/null 2>&1
