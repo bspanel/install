@@ -30,8 +30,8 @@ CYAN=$(tput setaf 6)
 echo "• Устанавливаем ${red}MYSQL${green} •"
 echo mysql-server mysql-server/root_password select "$MYPASS" | debconf-set-selections
 echo mysql-server mysql-server/root_password_again select "$MYPASS" | debconf-set-selections
-check
 apt-get install -y mysql-server > /dev/null 2>&1
+check
 echo "• Устанавливаем ${red}phpMyAdmin${green} •"
 echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
 echo "phpmyadmin phpmyadmin/mysql/admin-user string root" | debconf-set-selections
