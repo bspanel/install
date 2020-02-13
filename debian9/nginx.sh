@@ -1,5 +1,5 @@
 #!/bin/sh
-. /root/install/debian8/config
+. /root/install/debian9/config
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
@@ -141,5 +141,5 @@ echo "types {
   video/x-mng                           mng;
 }" >$FILE
 sudo ln -s /etc/nginx/sites-available/bspanel /etc/nginx/sites-enabled/bspanel > /dev/null 2>&1
-mv /root/install/debian8/proxy.conf /etc/nginx/proxy.conf > /dev/null 2>&1
+mv /root/install/debian9/proxy.conf /etc/nginx/proxy.conf > /dev/null 2>&1
 service nginx start > /dev/null 2>&1 && check

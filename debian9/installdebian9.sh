@@ -9,7 +9,7 @@ tee < ${LOG_PIPE} ${LOG_FILE} &
 exec  > ${LOG_PIPE}
 exec  2> ${LOG_PIPE}
 
-. /root/install/debian8/config
+. /root/install/debian9/config
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
@@ -49,7 +49,7 @@ bspanelsh()
 {
 clear
 echo "${orange}-------------------------------------------------------------------------------"
-Info "Здравствуйте, данный скрипт поможет Вам установить ${red}BSPanel${blue} на Debian 8
+Info "Здравствуйте, данный скрипт поможет Вам установить ${red}BSPanel${blue} на Debian 9
 Вам после установки, ни чего делать не надо.
 Скрипт за Вас всё установить кроме игр!"
 echo "${orange}-------------------------------------------------------------------------------"
@@ -62,47 +62,47 @@ case $yn in
 esac
 done
 read -p "${cyan}Пожалуйста, введите ${red}домен ${cyan}или ${red}IP${green}: ${cyan}" DOMAIN
-sed -i "s/domain/${DOMAIN}/g" /root/install/debian8/config
+sed -i "s/domain/${DOMAIN}/g" /root/install/debian9/config
 read -p "${cyan}Пожалуйста, введите ${red}IP${green}: ${cyan}" IPADR
-sed -i "s/ipadress/${IPADR}/g" /root/install/debian8/config
+sed -i "s/ipadress/${IPADR}/g" /root/install/debian9/config
 read -p "${cyan}Пожалуйста, введите ${red}количество ядер${green}: ${cyan}" YADRO
-sed -i "s/yadro1/${YADRO}/g" /root/install/debian8/config
+sed -i "s/yadro1/${YADRO}/g" /root/install/debian9/config
 read -p "${cyan}Введите пароль от root${green}: ${yellow}" VPASS
-sed -i "s/pass/${VPASS}/g" /root/install/debian8/config
+sed -i "s/pass/${VPASS}/g" /root/install/debian9/config
 echo "• Начинаем установку ${red}BSPanel${green} •"
 echo "• Обновляем пакеты •"
 apt-get update > /dev/null 2>&1 && check
 echo "• Устанавливаем необходимые пакеты для ${red}серверной части​${green} •"
 apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git lsb-release lib32stdc++6 sudo libreadline5 screen htop nano tcpdump lib32z1 ethstatus ssh zip unzip mc qstat gdb lib32gcc1 nload ntpdate lsof > /dev/null 2>&1 && check
 MYPASS=$(pwgen -cns -1 16)
-sed -i "s/mypass/${MYPASS}/g" /root/install/debian8/config
+sed -i "s/mypass/${MYPASS}/g" /root/install/debian9/config
 MYPASS2=$(pwgen -cns -1 16) 
 ###################################Пакеты##################################################################
 echo "• Добавляем пакеты •"
-sh /root/install/debian8/sources.sh && check
+sh /root/install/debian9/sources.sh && check
 echo "• Обновляем пакеты •"
 apt-get update -y > /dev/null 2>&1
 apt-get upgrade -y > /dev/null 2>&1 && check
 ###################################Пакеты###################################################################
 
 ###################################PHP######################################################################
-sh /root/install/debian8/php.sh
+sh /root/install/debian9/php.sh
 ###################################PHP######################################################################
 
 ###################################Apache2##################################################################
-sh /root/install/debian8/apache.sh
+sh /root/install/debian9/apache.sh
 ###################################Apache2##################################################################
 
 ###################################Nginx####################################################################
-sh /root/install/debian8/nginx.sh
+sh /root/install/debian9/nginx.sh
 ###################################Nginx####################################################################
 
 ###################################MYSQL####################################################################
-sh /root/install/debian8/mysql.sh
+sh /root/install/debian9/mysql.sh
 ###################################MYSQl####################################################################
 
 ###################################TIME####################################################################
-sh /root/install/debian8/time.sh
+sh /root/install/debian9/time.sh
 ###################################TIME####################################################################
 echo "• Устанавливаем библиотеку ${red}SSH2${green} •"
 if [ "$OS" = "" ]; then
@@ -112,11 +112,11 @@ apt-get install -y libssh2-php > /dev/null 2>&1
 fi
 check
 ###################################CRON#####################################################################
-sh /root/install/debian8/cron.sh
+sh /root/install/debian9/cron.sh
 ###################################CRON#####################################################################
 
 ###################################DDOS PROTECT##################################################################
-sh /root/install/debian8/ddos.sh
+sh /root/install/debian9/ddos.sh
 ###################################DDOS PROTECT##################################################################
 OS=$(lsb_release -s -i -c -r | xargs echo |sed 's; ;-;g' | grep Ubuntu)
 if [ "$OS" = "" ]; then
@@ -130,11 +130,11 @@ else
   sudo apt-get install -y gcc-multilib > /dev/null 2>&1
 fi
 ###################################java##################################################################
-sh /root/install/debian8/java.sh
+sh /root/install/debian9/java.sh
 ###################################java##################################################################
 
 ###################################iptables##################################################################
-sh /root/install/debian8/iptables.sh
+sh /root/install/debian9/iptables.sh
 ###################################iptables##################################################################
 #echo "• Включаем ${red}Nginx${green} для модуля ${red}FastDL${green} •"
 #wget -O nginx $MIRROR/files/debian/nginx/nginx.txt > /dev/null 2>&1
@@ -148,15 +148,15 @@ sh /root/install/debian8/iptables.sh
 #rm -rf nginx > /dev/null 2>&1 && check
 
 ###################################proftpd##################################################################
-sh /root/install/debian8/proftpd.sh
+sh /root/install/debian9/proftpd.sh
 ###################################proftpd##################################################################
 
 ###################################panel##################################################################
-sh /root/install/debian8/panel.sh
+sh /root/install/debian9/panel.sh
 ###################################panel##################################################################
 
 ###################################IONCUBE##################################################################
-sh /root/install/debian8/ioncube.sh
+sh /root/install/debian9/ioncube.sh
 ###################################IONCUBE##################################################################
 echo "• Перезагружаем ${red}FTP, MySQL, Apache2${green} •"
 service proftpd restart > /dev/null 2>&1 && check

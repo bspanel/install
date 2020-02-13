@@ -1,5 +1,5 @@
 #!/bin/sh
-. /root/install/debian8/config
+. /root/install/debian9/config
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
@@ -46,7 +46,7 @@ IP=$DOMAIN
 IP1=$IPVDS
 new_pass=$(pwgen -cns -1 7)
 account_admin=new_pass
-sed -i "s/new_admin/${new_pass}/g" /root/install/debian8/config
+sed -i "s/new_admin/${new_pass}/g" /root/install/debian9/config
 account_pass=`wget -qO- http://system.bspanel.ru/api/md5.php?passwd=${new_pass} | sed -e 's/<[^>]*>//g'`
 sed -i "s/mysqlp/${MP}/g" /var/www/system/data/mysql.php
 sed -i "s/bspanel_addr/${IP1}/g" /var/www/system/data/web.php

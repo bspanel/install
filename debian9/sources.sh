@@ -29,33 +29,17 @@ check()
 }
 #############################################################################################################
 OS=$(lsb_release -s -i -c -r | xargs echo |sed 's; ;-;g' | grep Ubuntu)
-if [ "$OS" = "Debian8" ]; then
-  echo "• Добавляем репозиторий •"
-  echo "deb http://ftp.ru.debian.org/debian/ jessie main" > /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ jessie main" >> /etc/apt/sources.list
-  echo "deb http://security.debian.org/ jessie/updates main" >> /etc/apt/sources.list
-  echo "deb-src http://security.debian.org/ jessie/updates main" >> /etc/apt/sources.list
-  echo "deb http://ftp.ru.debian.org/debian/ jessie-updates main" >> /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ jessie-updates main" >> /etc/apt/sources.list
-fi
-if [ "$OS" = "Debian7" ]; then
-  log_t "• Добавляем репозиторий •"
-  echo "deb http://ftp.ru.debian.org/debian/ wheezy main" > /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ wheezy main" >> /etc/apt/sources.list
-  echo "deb http://security.debian.org/ wheezy/updates main" >> /etc/apt/sources.list
-  echo "deb-src http://security.debian.org/ wheezy/updates main" >> /etc/apt/sources.list
-  echo "deb http://ftp.ru.debian.org/debian/ wheezy-updates main" >> /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ wheezy-updates main" >> /etc/apt/sources.list
-fi
 if [ "$OS" = "Debian9" ]; then
-  echo "• Добавляем репозиторий •"
-  echo "deb http://ftp.ru.debian.org/debian/ stretch main" > /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ stretch main" >> /etc/apt/sources.list
-  echo "deb http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
-  echo "deb-src http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
-  echo "deb http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
-  echo "deb-src http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
-  wget http://www.dotdeb.org/dotdeb.gpg
-  apt-key add dotdeb.gpg
-  rm dotdeb.gpg
-fi
+		echo "• Добавляем репозиторий •"
+		echo "deb http://ftp.ru.debian.org/debian/ stretch main" > /etc/apt/sources.list
+		echo "deb-src http://ftp.ru.debian.org/debian/ stretch main" >> /etc/apt/sources.list
+		echo "deb http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
+		echo "deb-src http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
+		echo "deb http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
+		echo "deb-src http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
+		wget http://www.dotdeb.org/dotdeb.gpg
+		apt-key add dotdeb.gpg
+		rm dotdeb.gpg
+		echo "• Обновляем пакеты •"
+		apt-get update
+	fi

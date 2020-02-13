@@ -1,5 +1,5 @@
 #!/bin/sh
-. /root/install/debian8/config
+. /root/install/debian9/config
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
