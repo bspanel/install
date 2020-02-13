@@ -35,6 +35,13 @@ export DEBIAN_FRONTEND=noninteractive
 dpkg -i mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
 apt-get update > /dev/null 2>&1
 apt-get --yes --force-yes install mysql-server > /dev/null 2>&1
+# Make sure that NOBODY can access the server without a password
+mysql -e "UPDATE mysql.user SET Password = PASSWORD('$MYPASS') WHERE User = 'root'"
+# Kill off the demo database
+mysql -e "update mysql.user set plugin='' where User='root';"
+# Make our changes take effect
+mysql -e "FLUSH PRIVILEGES"
+# Any subsequent tries to run queries this way will get access denied because lack of usr/pwd param
 sudo mysql_upgrade -u root -p$MYPASS --force --upgrade-system-tables > /dev/null 2>&1
 service mysql restart > /dev/null 2>&1
 rm mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
