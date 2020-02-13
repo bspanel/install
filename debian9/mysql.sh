@@ -28,22 +28,23 @@ LIME_YELLOW=$(tput setaf 190)
 CYAN=$(tput setaf 6)
 #############Цвета#############
 	echo "• Устанавливаем ${red} Mysql ${red}${green}.${red}5.6${green} •"
-	wget https://dev.mysql.com/get/mysql-apt-config_0.8.7-1_all.deb
+	wget https://dev.mysql.com/get/mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
 	export DEBIAN_FRONTEND=noninteractive
-	dpkg -i mysql-apt-config_0.8.7-1_all.deb
-	sed -i "s/5.7/5.6/g" /etc/apt/sources.list.d/mysql.list
-	apt-get update
-	apt-get --yes --force-yes install mysql-server
+	dpkg -i mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
+	sed -i "s/5.7/5.6/g" /etc/apt/sources.list.d/mysql.list > /dev/null 2>&1
+	apt-get update > /dev/null 2>&1
+	apt-get --yes --force-yes install mysql-server > /dev/null 2>&1
 	# Make sure that NOBODY can access the server without a password
-	mysql -e "UPDATE mysql.user SET Password = PASSWORD('$MYPASS') WHERE User = 'root'"
+	mysql -e "UPDATE mysql.user SET Password = PASSWORD('$MYPASS') WHERE User = 'root'" > /dev/null 2>&1
 	# Kill off the demo database
-	mysql -e "update mysql.user set plugin='' where User='root';"
+	mysql -e "update mysql.user set plugin='' where User='root';" > /dev/null 2>&1
 	# Make our changes take effect
-	mysql -e "FLUSH PRIVILEGES"
+	mysql -e "FLUSH PRIVILEGES" > /dev/null 2>&1
 	# Any subsequent tries to run queries this way will get access denied because lack of usr/pwd param
-	sudo mysql_upgrade -u root -p$MYPASS --force --upgrade-system-tables
-	service mysql restart
-	rm mysql-apt-config_0.8.7-1_all.deb
+	sudo mysql_upgrade -u root -p$MYPASS --force --upgrade-system-tables > /dev/null 2>&1
+	service mysql restart > /dev/null 2>&1
+	rm mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
+  check
 	echo "• Устанавливаем ${red}phpMyAdmin${green} •"
 	echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
 	echo "phpmyadmin phpmyadmin/mysql/admin-user string root" | debconf-set-selections
@@ -51,4 +52,5 @@ CYAN=$(tput setaf 6)
 	echo "phpmyadmin phpmyadmin/mysql/app-pass password $MYPASS" |debconf-set-selections
 	echo "phpmyadmin phpmyadmin/app-password-confirm password $MYPASS" | debconf-set-selections
 	echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
-	apt-get install -y phpmyadmin
+	apt-get install -y phpmyadmin > /dev/null 2>&1
+  check
