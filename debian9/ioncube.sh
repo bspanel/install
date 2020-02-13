@@ -33,6 +33,6 @@ unzip ioncube_loaders_lin_x86-64.zip > /dev/null 2>&1
 cp ioncube/ioncube_loader_lin_5.6.so /usr/lib/php5/20131226/
 cp ioncube/ioncube_loader_lin_5.6_ts.so /usr/lib/php5/20131226/
 rm -R ioncube*
-echo "zend_extension=ioncube_loader_lin_5.6.so">>"/etc/php5/apache2/php.ini"
-echo "zend_extension=ioncube_loader_lin_5.6.so">>"/etc/php5/cli/php.ini"
+echo "zend_extension=ioncube_loader_lin_5.6.so">>"/etc/php/php5.6/apache2/php.ini"
+echo "zend_extension=ioncube_loader_lin_5.6.so">>"/etc/php/php5.6/cli/php.ini"
 check
