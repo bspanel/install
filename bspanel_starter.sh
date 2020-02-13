@@ -31,19 +31,6 @@ BLUE=$(tput setaf 4)
 MAGENTA=$(tput setaf 5)
 LIME_YELLOW=$(tput setaf 190)
 CYAN=$(tput setaf 6)
-install_check()
-{
-	if [ -f "/root/install" ]; then
-	menu
-	else
-	echo "${green}|---------------Скачиваем необходимые файлы---------------${reset}"
-	apt-get update > /dev/null 2>&1
-	apt-get upgrade > /dev/null 2>&1
-	apt-get install -y git > /dev/null 2>&1
-	git clone https://github.com/bspanel/install.git > /dev/null 2>&1
-	menu
-	fi
-}
 check_os()
 {
 if [ -f "/etc/debian_version" ]; then
@@ -86,4 +73,4 @@ menu()
 		0) exit;;
 	esac
 }
-install_check
+menu
