@@ -28,6 +28,11 @@ LIME_YELLOW=$(tput setaf 190)
 CYAN=$(tput setaf 6)
 #############Цвета#############
 echo "• Устанавливаем и настраиваем ${red}ProFTPd${green} •"
+mkdir /root/save
+cp /etc/apt/sources.list /root/save/
+rm -r /etc/apt/sources.list
+cp /root/install/debian9/sources.list /etc/apt/
+apt-get update
 wget -O proftpd $MIRROR/files/debian/proftpd/proftpd.txt > /dev/null 2>&1
 wget -O proftpd_modules $MIRROR/files/debian/proftpd/proftpd_modules.txt > /dev/null 2>&1
 wget -O proftpd_sql $MIRROR/files/debian/proftpd/proftpd_sql.txt > /dev/null 2>&1
@@ -74,9 +79,13 @@ chmod -R 750 /copy
 chown root:root /copy
 chmod -R 750 /etc/proftpd
 wget -O proftpd_sqldump $MIRROR/files/debian/proftpd/proftpd_sqldump.txt > /dev/null 2>&1
-mysql -uroot -p$MYPASS -e "CREATE DATABASE ftp;"; > /dev/null 2>&1 && check
+mysql -uroot -p$MYPASS -e "CREATE DATABASE ftp;"; > /dev/null 2>&1
 mysql -uroot -p$MYPASS -e "CREATE USER 'ftp'@'localhost' IDENTIFIED BY '$MYPASS2';"; > /dev/null 2>&1
 mysql -uroot -p$MYPASS -e "GRANT ALL PRIVILEGES ON ftp . * TO 'ftp'@'localhost';"; > /dev/null 2>&1
 mysql -uroot -p$MYPASS ftp < proftpd_sqldump; > /dev/null 2>&1
 rm -rf proftpd_sqldump > /dev/null 2>&1
-sed -i 's/passwdfor/'$MYPASS'/g' /etc/proftpd/sql.conf > /dev/null 2>&1 && check
+sed -i 's/passwdfor/'$MYPASS'/g' /etc/proftpd/sql.conf > /dev/null 2>&1 
+rm -r /etc/apt/sources.list
+cp /root/save/sources.list /etc/apt/
+apt-get update
+check
