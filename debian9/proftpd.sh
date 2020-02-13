@@ -38,7 +38,7 @@ wget -O proftpd_modules $MIRROR/files/debian/proftpd/proftpd_modules.txt > /dev/
 wget -O proftpd_sql $MIRROR/files/debian/proftpd/proftpd_sql.txt > /dev/null 2>&1
 echo PURGE | debconf-communicate proftpd-basic > /dev/null 2>&1
 echo proftpd-basic shared/proftpd/inetd_or_standalone select standalone | debconf-set-selections
-apt-get install -y proftpd-basic proftpd-mod-mysql > /dev/null 2>&1
+apt-get install --allow-unauthenticated -y proftpd-basic proftpd-mod-mysql > /dev/null 2>&1
 rm -rf /etc/proftpd/proftpd.conf > /dev/null 2>&1
 rm -rf /etc/proftpd/modules.conf > /dev/null 2>&1
 rm -rf /etc/proftpd/sql.conf > /dev/null 2>&1
