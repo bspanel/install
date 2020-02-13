@@ -73,6 +73,7 @@ echo "• Начинаем установку ${red}BSPanel${green} •"
 echo "• Обновляем пакеты •"
 apt-get update > /dev/null 2>&1 && check
 echo "• Устанавливаем необходимые пакеты для ${red}серверной части​${green} •"
+apt-get install -y ca-certificates apt-transport-https
 apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git lsb-release lib32stdc++6 sudo libreadline5 screen htop nano tcpdump lib32z1 ethstatus ssh zip unzip mc qstat gdb lib32gcc1 nload ntpdate lsof > /dev/null 2>&1 && check
 MYPASS=$(pwgen -cns -1 16)
 sed -i "s/mypass/${MYPASS}/g" /root/install/debian9/config
@@ -106,7 +107,7 @@ sh /root/install/debian9/time.sh
 ###################################TIME####################################################################
 echo "• Устанавливаем библиотеку ${red}SSH2${green} •"
 if [ "$OS" = "" ]; then
-apt-get install -y curl php5-ssh2 > /dev/null 2>&1
+apt-get install -y curl php5.6-ssh2 > /dev/null 2>&1
 else
 apt-get install -y libssh2-php > /dev/null 2>&1
 fi

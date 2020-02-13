@@ -30,6 +30,8 @@ CYAN=$(tput setaf 6)
 #############Цвета#############
 echo "• Устанавливаем и настраиваем ${red}Apache2${green} •"
 apt-get install -y apache2 apache2-dev  > /dev/null 2>&1 && check
+echo "• Включаем модуль ${red}Apache2${green} •"
+a2enmod php5.6 > /dev/null 2>&1 && check
 echo "• Включаем модуль ${red}mod_rewrite${green} для ${red}Apache2${green} •"
 a2enmod rewrite > /dev/null 2>&1 && check
 echo "• Перезагружаем ${red}Apache2${green} •"

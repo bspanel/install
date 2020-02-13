@@ -25,4 +25,13 @@ check()
 }
 
 echo "• Устанавливаем пакеты ${red}php5 php5-dev php5-curl php5-memcache php5-json php5-mysql php-pear${red} •"
-apt-get install -y php5 php5-dev php5-curl php5-memcache php5-json php5-mysql php-pear > /dev/null 2>&1 && check
+wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add - > /dev/null 2>&1
+echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list > /dev/null 2>&1
+apt-get update > /dev/null 2>&1
+echo "• Устанавливаем пакеты! •"
+apt-get install -y php5.6 > /dev/null 2>&1
+sudo apt-get install -y php5.6-cli php5.6-common php5.6-curl php5.6-mbstring php5.6-mysql php5.6-xml > /dev/null 2>&1
+apt-get install -y php-memcache > /dev/null 2>&1
+apt-get install -y php-memcached > /dev/null 2>&1
+apt-get install -y memcached > /dev/null 2>&1
+apt-get install php5.6-gd > /dev/null 2>&1 && check

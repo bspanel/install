@@ -37,9 +37,9 @@ if [ "$OS" = "Debian9" ]; then
 		echo "deb-src http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
 		echo "deb http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
 		echo "deb-src http://ftp.ru.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list
-		wget http://www.dotdeb.org/dotdeb.gpg
-		apt-key add dotdeb.gpg
-		rm dotdeb.gpg
+		wget http://www.dotdeb.org/dotdeb.gpg > /dev/null 2>&1
+		apt-key add dotdeb.gpg > /dev/null 2>&1
+		rm dotdeb.gpg > /dev/null 2>&1
 		echo "• Обновляем пакеты •"
-		apt-get update
+		apt-get update > /dev/null 2>&1
 	fi
