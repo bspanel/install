@@ -61,7 +61,8 @@ if [ "$OS" = "Debian7" ]; then
 fi
 if [ "$OS" = "Debian9" ]; then
  echo "${green}|---------------Подддержка DEBIAN 9 временно не доступна---------------${reset}"
- exit
+ cd /root/install/debian9/
+sh installdebian9.sh
 fi
 }
 menu()
