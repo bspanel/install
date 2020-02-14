@@ -46,8 +46,8 @@ wget https://dev.mysql.com/get/mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
 export DEBIAN_FRONTEND=noninteractive
 dpkg -i mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
 apt-get update > /dev/null 2>&1
-apt-get --yes --allow-unauthenticated install mysql-server > /dev/null 2>&1
-apt-get --yes --allow-unauthenticated install mysql-server > /dev/null 2>&1
+apt-get --yes --allow-unauthenticated install mysql-server
+apt-get --yes --allow-unauthenticated install mysql-server
 sudo mysql_upgrade -u root -p$MYPASS --force --upgrade-system-tables > /dev/null 2>&1
 service mysql restart > /dev/null 2>&1
 rm mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
