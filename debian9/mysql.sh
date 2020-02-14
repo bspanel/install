@@ -30,17 +30,17 @@ CYAN=$(tput setaf 6)
 
 echo "• Устанавливаем ${red}MySQL and phpMyAdmin${green} •"
 
-wget $MIRROR/files/mysql/mysql-apt-config_0.8.14-1_all.deb > /dev/null 2>&1
-export DEBIAN_FRONTEND=noninteractive > /dev/null 2>&1
-echo mysql-apt-config mysql-apt-config/select-server select mysql-5.6 | debconf-set-selections > /dev/null 2>&1
-echo mysql-apt-config mysql-apt-config/select-product select Ok | debconf-set-selections > /dev/null 2>&1
-apt-get install -y ./mysql-apt-config_0.8.14-1_all.deb > /dev/null 2>&1
-dpkg -i mysql-apt-config_0.8.14-1_all.deb > /dev/null 2>&1
-echo mysql-community-server mysql-community-server/root-pass password "$MYPASS" | debconf-set-selections > /dev/null 2>&1
-echo mysql-community-server mysql-community-server/re-root-pass password "$MYPASS" | debconf-set-selections > /dev/null 2>&1
+wget $MIRROR/files/mysql/mysql-apt-config_0.8.14-1_all.deb 
+export DEBIAN_FRONTEND=noninteractive 
+echo mysql-apt-config mysql-apt-config/select-server select mysql-5.6 | debconf-set-selections 
+echo mysql-apt-config mysql-apt-config/select-product select Ok | debconf-set-selections 
+apt-get install -y ./mysql-apt-config_0.8.14-1_all.deb 
+dpkg -i mysql-apt-config_0.8.14-1_all.deb 
+echo mysql-community-server mysql-community-server/root-pass password "$MYPASS" | debconf-set-selections 
+echo mysql-community-server mysql-community-server/re-root-pass password "$MYPASS" | debconf-set-selections 
 
-apt-get update > /dev/null 2>&1
-apt-get install -y mysql-server > /dev/null 2>&1
+apt-get update 
+apt-get install -y mysql-server 
 
 echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections > /dev/null 2>&1
 echo "phpmyadmin phpmyadmin/mysql/admin-user string root" | debconf-set-selections > /dev/null 2>&1
