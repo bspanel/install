@@ -2,6 +2,6 @@
 DOMAIN="domain"
 IPADR="ipadress"
 YADRO="yadro1"
-MYPASS="mypass"
+MYPASS="mysqlas"
 VPASS="pass"
 account_admin="new_admin"
