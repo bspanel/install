@@ -27,7 +27,12 @@ MAGENTA=$(tput setaf 5)
 LIME_YELLOW=$(tput setaf 190)
 CYAN=$(tput setaf 6)
 #############Цвета#############
-	log_t "• Устанавливаем ${red} Mysql ${red}${green}.${red}5.6${green} •"
+	echo "• Устанавливаем ${red}MYSQL${green} •"
+echo mysql-server mysql-server/root_password select "$MYPASS" | debconf-set-selections
+echo mysql-server mysql-server/root_password_again select "$MYPASS" | debconf-set-selections
+apt-get install -y mysql-server > /dev/null 2>&1
+check
+  echo "• Устанавливаем ${red} Mysql ${red}${green}.${red}5.6${green} •"
 	wget https://dev.mysql.com/get/mysql-apt-config_0.8.7-1_all.deb
 	export DEBIAN_FRONTEND=noninteractive
 	dpkg -i mysql-apt-config_0.8.7-1_all.deb
