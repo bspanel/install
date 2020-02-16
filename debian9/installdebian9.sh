@@ -75,9 +75,7 @@ apt-get update > /dev/null 2>&1 && check
 echo "• Устанавливаем необходимые пакеты для ${red}серверной части​${green} •"
 apt-get install -y ca-certificates apt-transport-https > /dev/null 2>&1
 apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git lsb-release lib32stdc++6 sudo libreadline5 screen htop nano tcpdump lib32z1 ethstatus ssh zip unzip mc qstat gdb lib32gcc1 nload ntpdate lsof > /dev/null 2>&1 && check
-MYPASS=$(pwgen -cns -1 16)
-sed -i "s/mysqlas/${MYPASS}/g" /root/install/debian9/config
-MYPASS2=$(pwgen -cns -1 16) 
+
 ###################################Пакеты##################################################################
 echo "• Добавляем пакеты •"
 sh /root/install/debian9/sources.sh && check
@@ -147,10 +145,6 @@ sh /root/install/debian9/iptables.sh
 #service nginx restart > /dev/null 2>&1
 #service apache2 start > /dev/null 2>&1
 #rm -rf nginx > /dev/null 2>&1 && check
-
-###################################proftpd##################################################################
-sh /root/install/debian9/proftpd.sh
-###################################proftpd##################################################################
 
 ###################################panel##################################################################
 sh /root/install/debian9/panel.sh

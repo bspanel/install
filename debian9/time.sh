@@ -1,36 +1,23 @@
-#!/bin/sh
-
-MIRROR='http://cdn.bspanel.ru'
-IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
-VER=`cat /etc/issue.net | awk '{print $1$3}'`
-#############Цвета#############
-RED=$(tput setaf 1)
-red=$(tput setaf 1)
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
-white=$(tput setaf 7)
-reset=$(tput sgr0)
-toend=$(tput hpa $(tput cols))$(tput cub 6)
-YELLOW=$(tput setaf 3)
-BLUE=$(tput setaf 4)
-MAGENTA=$(tput setaf 5)
-LIME_YELLOW=$(tput setaf 190)
-CYAN=$(tput setaf 6)
-#############Цвета#############
-check()
-{
-  if [ $? -eq 0 ]; then
-  echo "${green}[OK]${green}"
-  tput sgr0
-  else
-  echo "${red}[FAIL]${red}"
-  tput sgr0
-  fi
-}
-###################################Время###################################################################
-echo "• Настраиваем время на сервере •"
-echo "Europe/Moscow" > /etc/timezone
-dpkg-reconfigure tzdata -f noninteractive > /dev/null 2>&1
-sudo sed -i -r 's~^;date\.timezone =$~date.timezone = "Europe/Moscow"~' /etc/php5/cli/php.ini > /dev/null 2>&1
-sudo sed -i -r 's~^;date\.timezone =$~date.timezone = "Europe/Moscow"~' /etc/php5/apache2/php.ini > /dev/null 2>&1 && check
-###################################Время###################################################################
+# → Crontab from BSPanel ←
+*/2 * * * * screen -dmS scan_hosting bash -c 'cd /var/www && php cron.php key123 scan_hosting'
+*/2 * * * * screen -dmS scan_servers bash -c 'cd /var/www && php cron.php key123 threads scan_servers'
+*/5 * * * * screen -dmS scan_servers_load bash -c 'cd /var/www && php cron.php key123 threads scan_servers_load'
+*/5 * * * * screen -dmS scan_servers_route bash -c 'cd /var/www && php cron.php key123 threads scan_servers_route'
+* * * * * screen -dmS scan_servers_down bash -c 'cd /var/www && php cron.php key123 threads scan_servers_down'
+*/10 * * * * screen -dmS notice_help bash -c 'cd /var/www && php cron.php key123 notice_help'
+*/15 * * * * screen -dmS scan_servers_stop bash -c 'cd /var/www && php cron.php key123 threads scan_servers_stop'
+*/15 * * * * screen -dmS scan_servers_copy bash -c 'cd /var/www && php cron.php key123 threads scan_servers_copy'
+*/30 * * * * screen -dmS notice_server_overdue bash -c 'cd /var/www && php cron.php key123 notice_server_overdue'
+*/30 * * * * screen -dmS preparing_web_delete bash -c 'cd /var/www && php cron.php key123 preparing_web_delete'
+0 * * * * screen -dmS scan_servers_admins bash -c 'cd /var/www && php cron.php key123 threads scan_servers_admins'
+* * * * * screen -dmS control_delete bash -c 'cd /var/www && php cron.php key123 control_delete'
+* * * * * screen -dmS control_install bash -c 'cd /var/www && php cron.php key123 control_install'
+*/2 * * * * screen -dmS scan_control bash -c 'cd /var/www && php cron.php key123 scan_control'
+*/2 * * * * screen -dmS control_scan_servers bash -c 'cd /var/www && php cron.php key123 control_threads control_scan_servers'
+*/5 * * * * screen -dmS control_scan_servers_route bash -c 'cd /var/www && php cron.php key123 control_threads control_scan_servers_route'
+* * * * * screen -dmS control_scan_servers_down bash -c 'cd /var/www && php cron.php key123 control_threads control_scan_servers_down'
+0 * * * * screen -dmS control_scan_servers_admins bash -c 'cd /var/www && php cron.php key123 control_threads control_scan_servers_admins'
+*/15 * * * * screen -dmS control_scan_servers_copy bash -c 'cd /var/www && php cron.php key123 control_threads control_scan_servers_copy'
+0 0 * * * screen -dmS graph_servers_day bash -c 'cd /var/www && php cron.php key123 threads graph_servers_day'
+0 * * * * screen -dmS graph_servers_hour bash -c 'cd /var/www && php cron.php key123 threads graph_servers_hour'
+# → Crontab from BSPanel ←
