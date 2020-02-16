@@ -163,7 +163,7 @@ ln -s /usr/share/phpmyadmin /var/www/pma > /dev/null 2>&1 && check
 echo "• Удаляем папку ${red}html${green} [var/www/html] •"
 rm -r /var/www/html > /dev/null 2>&1 && check
 
-echo "• Завершаем установку ${red}BSPanel${green} на Debian 8 •"
+echo "• Завершаем установку ${red}BSPanel${green} на Debian 9 •"
   echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
   echo "• Панель управления ${red}BSPanel ${YELLOW}установлена!"
   echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
