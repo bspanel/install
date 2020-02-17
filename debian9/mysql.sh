@@ -1,5 +1,5 @@
 #!/bin/sh
-. /root/install/debian8/config
+. /root/install/debian9/config
 MIRROR='http://cdn.bspanel.ru'
 IPVDS=$(echo "${SSH_CONNECTION}" | awk '{print $3}')
 VER=`cat /etc/issue.net | awk '{print $1$3}'`
@@ -27,13 +27,7 @@ MAGENTA=$(tput setaf 5)
 LIME_YELLOW=$(tput setaf 190)
 CYAN=$(tput setaf 6)
 #############Цвета#############
-
-MYPASS=$(pwgen -cns -1 16)
-MYPASS2=$(pwgen -cns -1 16) 
-sed -i "s/mypass/${MYPASS}/g" /root/install/debian9/config
-
 echo "• Устанавливаем ${red}MySQL and phpMyAdmin${green} •"
-
 
 wget http://dev.mysql.com/get/mysql-apt-config_0.8.14-1_all.deb > /dev/null 2>&1
 
@@ -60,15 +54,4 @@ apt-get install -y phpmyadmin > /dev/null 2>&1
 service mysql restart > /dev/null 2>&1
 rm mysql-apt-config_0.8.7-1_all.deb > /dev/null 2>&1
 cd > /dev/null 2>&1
-
-wget -O proftpd_sql $MIRROR/files/debian/proftpd/proftpd_sql.txt > /dev/null 2>&1
-mv proftpd_sql /etc/proftpd/sql.conf > /dev/null 2>&1
-rm -rf proftpd_sql > /dev/null 2>&1
-wget -O proftpd_sqldump $MIRROR/files/debian/proftpd/proftpd_sqldump.txt > /dev/null 2>&1
-mysql -uroot -p$MYPASS -e "CREATE DATABASE ftp;"; > /dev/null 2>&1
-mysql -uroot -p$MYPASS -e "CREATE USER 'ftp'@'localhost' IDENTIFIED BY '$MYPASS2';"; > /dev/null 2>&1
-mysql -uroot -p$MYPASS -e "GRANT ALL PRIVILEGES ON ftp . * TO 'ftp'@'localhost';"; > /dev/null 2>&1
-mysql -uroot -p$MYPASS ftp < proftpd_sqldump; > /dev/null 2>&1
-rm -rf proftpd_sqldump > /dev/null 2>&1
-sed -i 's/passwdfor/'$MYPASS'/g' /etc/proftpd/sql.conf > /dev/null 2>&1 
 check

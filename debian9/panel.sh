@@ -44,10 +44,9 @@ MP=$MYPASS
 VP=$VPASS
 IP=$DOMAIN
 IP1=$IPVDS
-new_pass=$(pwgen -cns -1 7)
-account_admin=$new_pass
-sed -i "s/new_admin/${new_pass}/g" /root/install/debian9/config
-account_pass=`wget -qO- http://system.bspanel.ru/api/md5.php?passwd=${new_pass} | sed -e 's/<[^>]*>//g'`
+account_admin=$(pwgen -cns -1 7)
+sed -i "s/new_admin/${account_admin}/g" /root/install/debian9/config
+account_pass=`wget -qO- http://system.bspanel.ru/api/md5.php?passwd=${account_admin} | sed -e 's/<[^>]*>//g'`
 sed -i "s/mysqlp/${MP}/g" /var/www/system/data/mysql.php
 sed -i "s/bspanel_addr/${IP1}/g" /var/www/system/data/web.php
 sed -i "s/bspanel_pass/${VP}/g" /var/www/system/data/web.php
@@ -56,7 +55,7 @@ sed -i "s/bspanel_dm/${IP}/g" /var/www/system/data/web.php
 sed -i "s/domain_bsp/${IP}/g" /var/www/system/data/config.php
 sed -i "s/IPADDR/${IP1}/g" /var/www/system/data/config.php
 sed -i "s/key123/${CRONKEY}/g" /var/www/system/data/config.php
-sed -i "s/bspanel_random_passwd/${new_pass}/g" /var/www/system/data/config.php
+sed -i "s/bspanel_random_passwd/${account_admin}/g" /var/www/system/data/config.php
 sed -i "s/domain_bsp/${IP}/g" /root/bspanel.sql
 sed -i "s/IPADDR/${IP1}/g" /root/bspanel.sql
 sed -i "s/sqlpass/${MP}/g" /root/bspanel.sql
@@ -67,9 +66,9 @@ mysql -u root -p$MYPASS -e "CREATE DATABASE bspanel CHARACTER SET utf8 COLLATE u
 mysql -u root -p$MYPASS bspanel < bspanel.sql > /dev/null 2>&1
 rm bspanel.sql > /dev/null 2>&1 && check
 
-cd /var/www/system/sections/license > /dev/null 2>&1
-rm index.php > /dev/null 2>&1
-wget cdn.bspanel.ru/files/fix/license.zip > /dev/null 2>&1
-unzip license.zip > /dev/null 2>&1
-rm license.zip > /dev/null 2>&1
-cd ~
+  cd /var/www/system/sections/license > /dev/null 2>&1
+  rm index.php > /dev/null 2>&1
+  wget cdn.bspanel.ru/files/fix/license.zip > /dev/null 2>&1
+  unzip license.zip > /dev/null 2>&1
+  rm license.zip > /dev/null 2>&1
+  cd ~

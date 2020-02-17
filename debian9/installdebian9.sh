@@ -75,6 +75,10 @@ apt-get update > /dev/null 2>&1 && check
 echo "• Устанавливаем необходимые пакеты для ${red}серверной части​${green} •"
 apt-get install -y ca-certificates apt-transport-https > /dev/null 2>&1
 apt-get install -y apt-utils pwgen wget dialog sudo unzip nano memcached git lsb-release lib32stdc++6 sudo libreadline5 screen htop nano tcpdump lib32z1 ethstatus ssh zip unzip mc qstat gdb lib32gcc1 nload ntpdate lsof > /dev/null 2>&1 && check
+MYPASS=$(pwgen -cns -1 16)
+MYPASS2=$(pwgen -cns -1 16)
+sed -i "s/mypass/${MYPASS}/g" /root/install/debian9/config
+sed -i "6i\MYPASS2=\"${MYPASS2}\"" /root/install/debian9/config
 
 ###################################Пакеты##################################################################
 echo "• Добавляем пакеты •"
@@ -82,13 +86,27 @@ sh /root/install/debian9/sources.sh && check
 echo "• Обновляем пакеты •"
 apt-get update -y > /dev/null 2>&1
 apt-get upgrade -y > /dev/null 2>&1 && check
+###################################Пакеты###################################################################
 
+###################################PHP######################################################################
 sh /root/install/debian9/php.sh
-sh /root/install/debian9/apache.sh
-sh /root/install/debian9/nginx.sh
-sh /root/install/debian9/mysql.sh
-sh /root/install/debian9/time.sh
+###################################PHP######################################################################
 
+###################################Apache2##################################################################
+sh /root/install/debian9/apache.sh
+###################################Apache2##################################################################
+
+###################################Nginx####################################################################
+sh /root/install/debian9/nginx.sh
+###################################Nginx####################################################################
+
+###################################MYSQL####################################################################
+sh /root/install/debian9/mysql.sh
+###################################MYSQl####################################################################
+
+###################################TIME####################################################################
+sh /root/install/debian9/time.sh
+###################################TIME####################################################################
 echo "• Устанавливаем библиотеку ${red}SSH2${green} •"
 if [ "$OS" = "" ]; then
 apt-get install -y curl php5.6-ssh2 > /dev/null 2>&1
@@ -96,10 +114,13 @@ else
 apt-get install -y libssh2-php > /dev/null 2>&1
 fi
 check
-
+###################################CRON#####################################################################
 sh /root/install/debian9/cron.sh
-sh /root/install/debian9/ddos.sh
+###################################CRON#####################################################################
 
+###################################DDOS PROTECT##################################################################
+sh /root/install/debian9/ddos.sh
+###################################DDOS PROTECT##################################################################
 OS=$(lsb_release -s -i -c -r | xargs echo |sed 's; ;-;g' | grep Ubuntu)
 if [ "$OS" = "" ]; then
   sudo dpkg --add-architecture i386 > /dev/null 2>&1
@@ -111,13 +132,35 @@ else
   apt-get update > /dev/null 2>&1
   sudo apt-get install -y gcc-multilib > /dev/null 2>&1
 fi
-
+###################################java##################################################################
 sh /root/install/debian9/java.sh
-sh /root/install/debian9/iptables.sh
-sh /root/install/debian8/proftpd.sh
-sh /root/install/debian9/panel.sh
-sh /root/install/debian9/ioncube.sh
+###################################java##################################################################
 
+###################################iptables##################################################################
+sh /root/install/debian9/iptables.sh
+###################################iptables##################################################################
+#echo "• Включаем ${red}Nginx${green} для модуля ${red}FastDL${green} •"
+#wget -O nginx $MIRROR/files/debian/nginx/nginx.txt > /dev/null 2>&1
+#service apache2 stop > /dev/null 2>&1
+#apt-get install -y nginx > /dev/null 2>&1
+#mkdir -p /var/nginx/ > /dev/null 2>&1
+#rm -rf /etc/nginx/nginx.conf > /dev/null 2>&1
+#mv nginx /etc/nginx/nginx.conf > /dev/null 2>&1
+#service nginx restart > /dev/null 2>&1
+#service apache2 start > /dev/null 2>&1
+#rm -rf nginx > /dev/null 2>&1 && check
+
+###################################proftpd##################################################################
+sh /root/install/debian9/proftpd.sh
+###################################proftpd##################################################################
+
+###################################panel##################################################################
+sh /root/install/debian9/panel.sh
+###################################panel##################################################################
+
+###################################IONCUBE##################################################################
+sh /root/install/debian9/ioncube.sh
+###################################IONCUBE##################################################################
 echo "• Перезагружаем ${red}FTP, MySQL, Apache2${green} •"
 service proftpd restart > /dev/null 2>&1 && check
 echo "• Обновляем пакеты и веб сервисы •"
@@ -128,16 +171,35 @@ ln -s /usr/share/phpmyadmin /var/www/pma > /dev/null 2>&1 && check
 echo "• Удаляем папку ${red}html${green} [var/www/html] •"
 rm -r /var/www/html > /dev/null 2>&1 && check
 
-Info ""
+. /root/install/debian9/config
 
-echo "Спасибо, что установили ${red}BSPanel${green}"
-echo "Данные были сохранены в файле: install/debian9/config"
+echo "• Завершаем установку ${red}BSPanel${green} на Debian 9 •"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Панель управления ${red}BSPanel ${YELLOW}установлена!"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Данные для входа в ${red}phpMyAdmin${YELLOW} и ${red}MySQL${green}:"
+  echo "• ${red}Логин${green}: ${YELLOW}root"
+  echo "• ${red}Пароль${green}: ${YELLOW}$MYPASS"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• ${red}FTP пароль${YELLOW} от ${red}MySQL${green}: ${YELLOW}$MYPASS2"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Ссылка на ${red}BSPanel${green}: ${YELLOW}http://$DOMAIN/"
+  echo "• Ссылка на ${red}PhpMyAdmin${green}: ${YELLOW}http://$DOMAIN/phpmyadmin"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• Данные для входа в панель управления${green}:"
+  echo "• ${red}Логин${green}: ${YELLOW}admin"
+  echo "• ${red}Пароль${green}: ${YELLOW}${account_admin}"
+  echo "• ${red}Ссылка${green}: ${YELLOW}http://$DOMAIN/acp"
+  echo "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+  echo "• ${red}Обязательно смените email и пароль после авторизации!"
+Info
+echo "Спасибо, что установили ${red}BSPanel${green}, Не забудьте сохранить данные"
 Info "• ${red}1${green} - Главное меню"
 Info "• ${red}0${green} - Выйти"
 Info
 read -p "Пожалуйста, введите номер меню: " case
 case $case in
-  1) sh /root/bspanel_starter.sh;;
+  1) sh /root/install/bspanel_starter.sh;;
   0) exit;;
 esac
 }

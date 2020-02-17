@@ -28,7 +28,7 @@ LIME_YELLOW=$(tput setaf 190)
 CYAN=$(tput setaf 6)
 #############Цвета#############
 
-apt-get install -y cron
+apt-get install -y cron > /dev/null 2>&1
 DIR="/var/www"
 CRONKEY=$(pwgen -cns -1 6)
 CRONPANEL="/etc/crontab"
